@@ -136,7 +136,8 @@ function createTask(task) {
          clearTimeout(pressTimer);
 });
 // نگه داشتن روی تسک در موبایل
-    taskRow.addEventListener("touchstart", function () {
+    taskRow.addEventListener("touchstart", function (e) {
+         e.preventDefault();
          pressTimer = setTimeout(function () {
              taskRow.classList.toggle("show-actions");
     }, 600);
