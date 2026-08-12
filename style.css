@@ -156,6 +156,8 @@ ul {
     border-radius: 50px;
 
     min-width: 0;
+    user-select: none;
+    -webkit-user-select:none;
 }
 
 .task-row li span {
