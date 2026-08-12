@@ -274,6 +274,7 @@ ul {
 /* هاور */
 .task-actions button:hover {
     transform: scale(1.3);
+    box-shadow: none;
 }
 
 .edit-input {
