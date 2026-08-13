@@ -225,6 +225,11 @@ ul {
     button {
         width: 100%;
     }
+    @media (max-width: 500px) {
+    .touch-hint {
+        display: block;
+    }
+}
 }
 /* =========================
    Task Actions
@@ -295,4 +300,17 @@ ul {
     direction: rtl;
     text-align: right;
     margin: 0;
+}
+.touch-hint {
+    display: none;
+    text-align: center;
+    font-size: 12px;
+    color: #8d6b91;
+    margin-top: -15px;
+    margin-bottom: 20px;
+    transition: opacity 0.4s;
+}
+
+.touch-hint.hide {
+    opacity: 0;
 }

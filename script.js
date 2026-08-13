@@ -2,6 +2,7 @@
 const taskInput = document.getElementById("taskInput");
 const addBtn = document.getElementById("addBtn");
 const taskList = document.getElementById("taskList");
+const touchHint = document.querySelector(".touch-hint");
 
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 function createTask(task) {
@@ -136,10 +137,20 @@ function createTask(task) {
          clearTimeout(pressTimer);
 });
 // نگه داشتن روی تسک در موبایل
-    taskRow.addEventListener("touchstart", function (e) {
-         e.preventDefault();
-         pressTimer = setTimeout(function () {
-             taskRow.classList.toggle("show-actions");
+    taskRow.addEventListener("touchstart", function () {
+
+    pressTimer = setTimeout(function () {
+
+        taskRow.classList.toggle("show-actions");
+
+        if (touchHint) {
+            touchHint.classList.add("hide");
+
+            setTimeout(function () {
+                touchHint.style.display = "none";
+            }, 400);
+        }
+
     }, 600);
 });
 
