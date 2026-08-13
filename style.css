@@ -224,11 +224,6 @@ ul {
 
     button {
         width: 100%;
-    }
-    @media (max-width: 500px) {
-    .touch-hint {
-        display: block;
-    }
 }
 }
 /* =========================
@@ -303,13 +298,18 @@ ul {
 }
 
 
-.touch-hint.hide {
-    opacity: 0;
-}
+
+
 .touch-hint {
-    display: block !important;
+    display: none;
     text-align: center;
     font-size: 12px;
     color: #8d6b91;
     margin: 10px 0 20px;
+}
+
+@media (max-width: 500px) {
+    .touch-hint {
+        display: block !important;
+    }
 }
