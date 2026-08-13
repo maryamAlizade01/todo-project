@@ -3,6 +3,10 @@ const taskInput = document.getElementById("taskInput");
 const addBtn = document.getElementById("addBtn");
 const taskList = document.getElementById("taskList");
 const touchHint = document.querySelector(".touch-hint");
+const hintSeen = localStorage.getItem("hintSeen");
+if (hintSeen === "true") {
+    touchHint.style.display = "none";
+}
 
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 function createTask(task) {
@@ -144,12 +148,14 @@ function createTask(task) {
         taskRow.classList.toggle("show-actions");
 
         if (touchHint) {
-            touchHint.classList.add("hide");
+    touchHint.classList.add("hide");
 
-            setTimeout(function () {
-                touchHint.style.display = "none";
-            }, 400);
-        }
+    localStorage.setItem("hintSeen", "true");
+
+    setTimeout(function () {
+        touchHint.style.display = "none";
+    }, 400);
+}
 
     }, 600);
 });
