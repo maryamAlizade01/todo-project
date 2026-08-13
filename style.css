@@ -301,16 +301,15 @@ ul {
     text-align: right;
     margin: 0;
 }
-.touch-hint {
-    display: none;
-    text-align: center;
-    font-size: 12px;
-    color: #8d6b91;
-    margin-top: -15px;
-    margin-bottom: 20px;
-    transition: opacity 0.4s;
-}
+
 
 .touch-hint.hide {
     opacity: 0;
+}
+.touch-hint {
+    display: block !important;
+    text-align: center;
+    font-size: 12px;
+    color: #8d6b91;
+    margin: 10px 0 20px;
 }
