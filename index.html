@@ -8,16 +8,49 @@
 </head>
 <body>
     <div class="container">
-        <h1>لیست کار ها</h1>
-        <p class="touch-hint">
-    👆 برای ویرایش یا حذف، روی تسک چند لحظه نگه دارید
-        </p>
+        <div class="title-box">
+            <h1>لیست کار ها</h1>
+
+            <button id="helpBtn" class="help-btn">ⓘ</button>
+        </div>
         <div class="input-box">
             <input class="text" id="taskInput" placeholder="کار جدید را وارد کنید ...">
             <button id="addBtn">افزودن</button>
         </div>
         <ul id="taskList"></ul>
+        <div id="helpModal" class="help-modal">
+
+            <div class="help-content">
+
+               <button id="closeHelp" class="close-help">×</button>
+
+                    <h2>راهنمای استفاده</h2>
+                    
+            <div class="help-item">
+                <span>👆</span>
+                <p>برای نمایش گزینه‌های ویرایش و حذف، روی تسک چند لحظه نگه دارید.</p>
+            </div>
+
+            <div class="help-item">
+                <span>✓</span>
+                <p>برای انجام‌شدن یا لغو انجام تسک، روی دکمه تیک بزنید.</p>
+            </div>
+
+            <div class="help-item">
+               <span>✎</span>
+               <p>برای ویرایش متن تسک از آیکون مداد استفاده کنید.</p>
+            </div>
+
+            <div class="help-item">
+               <span>×</span>
+               <p>برای حذف تسک از آیکون ضربدر استفاده کنید.</p>
+            </div>
+
+          </div>
+
+        </div>
     </div>
+    <div id="toast" class="toast"></div>
     <script src="script.js"></script>
 </body>
 </html>

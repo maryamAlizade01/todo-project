@@ -2,14 +2,82 @@
 const taskInput = document.getElementById("taskInput");
 const addBtn = document.getElementById("addBtn");
 const taskList = document.getElementById("taskList");
-const touchHint = document.querySelector(".touch-hint");
-const hintSeen = localStorage.getItem("hintSeen");
-if (hintSeen === "true") {
-    touchHint.style.display = "none";
+
+const toast = document.getElementById("toast");
+
+const helpBtn = document.getElementById("helpBtn");
+const helpModal = document.getElementById("helpModal");
+const closeHelp = document.getElementById("closeHelp");
+
+
+function showToast(message, showUndo = false) {
+
+    toast.innerHTML = "";
+
+    const messageText = document.createElement("span");
+    messageText.textContent = message;
+
+    toast.appendChild(messageText);
+
+    if (showUndo) {
+
+        const undoBtn = document.createElement("button");
+
+        undoBtn.type = "button";
+        undoBtn.textContent = "بازگردانی";
+        undoBtn.classList.add("undo-btn");
+
+        undoBtn.onclick = function () {
+
+            if (!deletedTask) {
+                return;
+            }
+
+            // برگرداندن Task به آرایه
+            tasks.splice(deletedTaskIndex, 0, deletedTask);
+
+            // ذخیره
+            localStorage.setItem("tasks", JSON.stringify(tasks));
+
+            // اضافه کردن دوباره به صفحه
+            createTask(deletedTask);
+
+            // بستن Toast
+            toast.classList.remove("show");
+
+            // پاک کردن اطلاعات
+            deletedTask = null;
+            deletedTaskIndex = null;
+
+            clearTimeout(undoTimer);
+        };
+
+        toast.appendChild(undoBtn);
+    }
+
+    toast.classList.add("show");
+
+    clearTimeout(undoTimer);
+
+    undoTimer = setTimeout(function () {
+
+        toast.classList.remove("show");
+
+        deletedTask = null;
+        deletedTaskIndex = null;
+
+    }, 4000);
 }
 
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+    let deletedTask = null;
+    let deletedTaskIndex = null;
+    let undoTimer = null;
+
 function createTask(task) {
+
+    
 
     // ساخت ردیف کار
     const taskRow = document.createElement("div");
@@ -93,10 +161,27 @@ function createTask(task) {
 
    // حذف تسک
     deleteBtn.addEventListener("click", function (event) {
-        event.stopPropagation();
 
-        taskRow.remove();
+    event.stopPropagation();
+
+    const taskIndex = tasks.indexOf(task);
+
+    if (taskIndex === -1) {
+        return;
+    }
+
+    deletedTask = task;
+    deletedTaskIndex = taskIndex;
+
+    tasks.splice(taskIndex, 1);
+
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+
+    taskRow.remove();
+
+    showToast("کار حذف شد ✓", true);
 });
+
 
 
     // قرار دادن دکمه‌ها داخل بخش گزینه‌ها
@@ -147,16 +232,6 @@ function createTask(task) {
 
         taskRow.classList.toggle("show-actions");
 
-        if (touchHint) {
-    touchHint.classList.add("hide");
-
-    localStorage.setItem("hintSeen", "true");
-
-    setTimeout(function () {
-        touchHint.style.display = "none";
-    }, 400);
-}
-
     }, 600);
 });
 
@@ -185,6 +260,8 @@ addBtn.addEventListener("click", function () {
     localStorage.setItem("tasks", JSON.stringify(tasks));
 
     createTask(newTask);
+
+    showToast("کار با موفقیت اضافه شد ✓");
 
     taskInput.value = "";
     taskInput.focus();
