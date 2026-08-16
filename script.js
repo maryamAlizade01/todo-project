@@ -1,13 +1,18 @@
 
 const taskInput = document.getElementById("taskInput");
 const addBtn = document.getElementById("addBtn");
-const taskList = document.getElementById("taskList")
+const taskList = document.getElementById("taskList");
+
+const taskCount = document.getElementById("taskCount");
+const searchInput = document.getElementById("searchInput");
+const filterButtons = document.querySelectorAll(".filter-btn");
 
 const toast = document.getElementById("toast");
 
 const helpBtn = document.getElementById("helpBtn");
 const helpModal = document.getElementById("helpModal");
 const closeHelp = document.getElementById("closeHelp");
+const helpContent = document.querySelector(".help-content");
 
 
 function showToast(message, showUndo = false) {
@@ -42,6 +47,10 @@ function showToast(message, showUndo = false) {
             // اضافه کردن دوباره به صفحه
             createTask(deletedTask);
 
+            updateTaskCount();
+
+            filterTasks(currentFilter);
+            
             // بستن Toast
             toast.classList.remove("show");
 
@@ -74,7 +83,87 @@ let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
     let deletedTask = null;
     let deletedTaskIndex = null;
     let undoTimer = null;
+    let currentFilter = "all";
 
+    function updateTaskCount() {
+    const remainingTasks = tasks.filter(function (task) {
+        return !task.completed;
+    }).length;
+
+    taskCount.textContent = remainingTasks;
+}
+
+function filterTasks(filter) {
+    const taskRows = document.querySelectorAll(".task-row");
+
+    taskRows.forEach(function (taskRow) {
+
+        const task = taskRow.taskData;
+
+        if (filter === "all") {
+            taskRow.style.display = "flex";
+        }
+
+        else if (filter === "active") {
+            taskRow.style.display = task.completed ? "none" : "flex";
+        }
+
+        else if (filter === "completed") {
+            taskRow.style.display = task.completed ? "flex" : "none";
+        }
+
+    });
+}
+function searchTasks() {
+    const searchText = searchInput.value.trim().toLowerCase();
+
+    const taskRows = document.querySelectorAll(".task-row");
+
+    taskRows.forEach(function (taskRow) {
+
+        const task = taskRow.taskData;
+
+        const matchesSearch = task.text.toLowerCase().includes(searchText);
+
+        let matchesFilter = true;
+
+        if (currentFilter === "active") {
+            matchesFilter = !task.completed;
+        }
+
+        if (currentFilter === "completed") {
+            matchesFilter = task.completed;
+        }
+
+        if (matchesSearch && matchesFilter) {
+            taskRow.style.display = "flex";
+        } else {
+            taskRow.style.display = "none";
+        }
+
+    });
+}
+searchInput.addEventListener("input", function () {
+    searchTasks();
+});
+filterButtons.forEach(function (button) {
+
+    button.addEventListener("click", function () {
+
+        filterButtons.forEach(function (btn) {
+            btn.classList.remove("active");
+        });
+
+        button.classList.add("active");
+
+        const filter = button.dataset.filter;
+
+        currentFilter = filter;
+
+        searchTasks();
+    });
+
+});
 function createTask(task) {
 
     
@@ -82,6 +171,8 @@ function createTask(task) {
     // ساخت ردیف کار
     const taskRow = document.createElement("div");
     taskRow.classList.add("task-row");
+
+    taskRow.taskData = task;
 
     // ساخت کادر متن
     const li = document.createElement("li");
@@ -179,6 +270,10 @@ function createTask(task) {
 
     taskRow.remove();
 
+    updateTaskCount();
+
+    searchTasks();
+
     showToast("کار حذف شد ✓", true);
 });
 
@@ -196,6 +291,8 @@ function createTask(task) {
     taskRow.classList.toggle("completed");
 
     localStorage.setItem("tasks", JSON.stringify(tasks));
+
+    updateTaskCount();
 });
 
     // قرار دادن متن داخل کادر
@@ -261,10 +358,22 @@ addBtn.addEventListener("click", function () {
 
     createTask(newTask);
 
+    updateTaskCount();
+
+    searchTasks();
+
     showToast("کار با موفقیت اضافه شد ✓");
 
     taskInput.value = "";
     taskInput.focus();
+});
+
+taskInput.addEventListener("keydown", function (event) {
+
+    if (event.key === "Enter") {
+        addBtn.click();
+    }
+
 });
 
 
@@ -272,4 +381,30 @@ tasks.forEach(function (task) {
     createTask(task);
 });
 
-    
+updateTaskCount();
+
+// باز کردن راهنما
+helpBtn.addEventListener("click", function (event) {
+    event.stopPropagation();
+
+    helpModal.style.display = "flex";
+});
+
+// بستن با ضربدر
+closeHelp.addEventListener("click", function (event) {
+    event.stopPropagation();
+
+    helpModal.style.display = "none";
+});
+
+// جلوگیری از بسته شدن وقتی داخل پنجره کلیک می‌کنیم
+helpContent.addEventListener("click", function (event) {
+    event.stopPropagation();
+});
+
+// بستن وقتی بیرون پنجره کلیک می‌کنیم
+document.addEventListener("click", function () {
+    if (helpModal.style.display === "flex") {
+        helpModal.style.display = "none";
+    }
+});

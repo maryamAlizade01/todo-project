@@ -17,6 +17,22 @@
             <input class="text" id="taskInput" placeholder="کار جدید را وارد کنید ...">
             <button id="addBtn">افزودن</button>
         </div>
+        <div class="task-counter">
+            <span id="taskCount">0</span>
+               کار باقی مانده
+        </div>
+        <div class="search-box">
+           <input
+              type="text"
+              id="searchInput"
+              placeholder="جستجوی کار..."
+              >
+        </div>
+        <div class="filter-box">
+            <button class="filter-btn active" data-filter="all">همه</button>
+            <button class="filter-btn" data-filter="active">انجام نشده</button>
+            <button class="filter-btn" data-filter="completed">انجام شده</button>
+        </div>
         <ul id="taskList"></ul>
         <div id="helpModal" class="help-modal">
 

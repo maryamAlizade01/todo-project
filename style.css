@@ -210,8 +210,12 @@ ul {
 ========================= */
 @media (max-width: 500px) {
     .container {
-        padding: 22px;
-        border-radius: 20px;
+    width: 100%;
+    max-width: 450px;
+
+    padding: 20px;
+
+    border-radius: 20px;
     }
 
     h1 {
@@ -334,19 +338,13 @@ ul {
     transform:none;
     box-shadow: none;
 }
-/* =========================
-   Help Modal
-========================= */
-
-/* =========================
-   Help Modal
-========================= */
 
 .help-modal {
     position: fixed;
     inset: 0;
 
-    display: flex;
+    display: none;
+
     justify-content: center;
     align-items: center;
 
@@ -354,53 +352,26 @@ ul {
 
     background: rgba(40, 20, 45, 0.35);
 
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
 
-    z-index: 1000;
-
-    opacity: 0;
-    visibility: hidden;
-
-    transition: opacity 0.25s ease, visibility 0.25s ease;
+    z-index: 9999;
 }
 
-.help-modal.show {
-    opacity: 1;
-    visibility: visible;
-}
 .help-content {
-    position: relative;
-
     width: 100%;
     max-width: 380px;
 
     background: white;
 
+    border-radius: 20px;
+
     padding: 25px;
 
-    border-radius: 22px;
-
-    box-shadow: 0 20px 50px rgba(84, 43, 85, 0.3);
+    position: relative;
 
     direction: rtl;
-
-    transform: scale(0.9) translateY(10px);
-    opacity: 0;
-
-    transition: transform 0.25s ease, opacity 0.25s ease;
 }
-
-.help-modal.show .help-content {
-    transform: scale(1) translateY(0);
-    opacity: 1;
-}
-
-.help-modal.show .help-content {
-    transform: scale(1) translateY(0);
-    opacity: 1;
-}
-
 .help-content h2 {
     text-align: center;
 
@@ -414,8 +385,8 @@ ul {
 .close-help {
     position: absolute;
 
-    top: 12px;
-    left: 12px;
+    top: 10px;
+    left: 10px;
 
     width: 30px;
     height: 30px;
@@ -424,8 +395,7 @@ ul {
 
     border-radius: 50%;
 
-    background: #f3e5f5;
-
+    background: #f1d8f5;
     color: #891ba8;
 
     font-size: 20px;
@@ -448,17 +418,11 @@ ul {
     gap: 12px;
 
     margin-bottom: 15px;
-
-    padding: 10px;
-
-    background: #faf5fb;
-
-    border-radius: 12px;
 }
 
 .help-item span {
-    width: 32px;
-    height: 32px;
+    width: 35px;
+    height: 35px;
 
     flex-shrink: 0;
 
@@ -472,33 +436,17 @@ ul {
 
     color: #891ba8;
 
-    font-size: 16px;
+    font-size: 18px;
 }
 
 .help-item p {
-    margin: 0;
-
     color: #542b55;
 
     font-size: 13px;
 
-    line-height: 1.7;
-}
-@media (max-width: 500px) {
+    line-height: 1.8;
 
-    .help-content {
-        max-width: 100%;
-        padding: 22px;
-        border-radius: 20px;
-    }
-
-    .help-content h2 {
-        font-size: 20px;
-    }
-
-    .help-item p {
-        font-size: 12px;
-    }
+    margin: 0;
 }
 /* =========================
    Toast
@@ -561,4 +509,97 @@ ul {
     transform: none;
     box-shadow: none;
     text-decoration: underline;
+}
+.help-modal::before {
+    content: "";
+
+    position: absolute;
+
+    width: 520px;
+    height: 520px;
+
+    background: rgba(191, 156, 226, 0.35);
+
+    filter: blur(70px);
+
+    border-radius: 50%;
+
+    z-index: -1;
+}
+.task-counter {
+    margin-top: 15px;
+
+    text-align: center;
+
+    color: #542b55;
+
+    font-size: 13px;
+
+    font-weight: 500;
+}
+
+.task-counter span {
+    font-weight: 700;
+
+    color: #891ba8;
+}
+.filter-box {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+
+    margin-top: 18px;
+}
+
+.filter-btn {
+    width: auto;
+
+    padding: 7px 14px;
+
+    border-radius: 20px;
+
+    background: #f1d8f5;
+    color: #891ba8;
+
+    font-size: 12px;
+}
+
+.filter-btn:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.filter-btn.active {
+    background: #891ba8;
+    color: white;
+}
+.search-box {
+    margin-top: 15px;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 11px 15px;
+
+    border: 2px solid #eee;
+    border-radius: 12px;
+
+    outline: none;
+
+    background: #fafafa;
+
+    font-family: 'Estedad', 'Outfit', sans-serif;
+    font-size: 14px;
+
+    direction: rtl;
+    text-align: right;
+
+    transition: 0.25s;
+}
+
+.search-box input:focus {
+    border-color: #ecbffe;
+    background: white;
+
+    box-shadow: 0 8px 18px rgba(199, 102, 234, 0.3);
 }
