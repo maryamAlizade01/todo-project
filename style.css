@@ -229,6 +229,141 @@ ul {
     button {
         width: 100%;
 }
+.filter-box {
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+
+    gap: 6px;
+
+    flex-wrap: nowrap;
+}
+
+.filter-btn {
+    flex: 1;
+
+    padding: 7px 5px;
+
+    font-size: 11px;
+
+    white-space: nowrap;
+}
+.search-box {
+    width: 100%;
+}
+
+.search-box input {
+    width: 100%;
+
+    padding: 11px 12px;
+
+    font-size: 13px;
+}
+.task-row {
+    gap: 8px;
+
+    margin-bottom: 14px;
+}
+
+.task-row li {
+    height: auto;
+
+    min-height: 35px;
+
+    display: flex;
+    align-items: center;
+}
+
+.task-row li span {
+    width: 100%;
+
+    margin-left: 8px;
+
+    overflow-wrap: anywhere;
+}
+.task-actions {
+    right: 10px;
+    top: -10px;
+
+    gap: 6px;
+}
+
+.task-actions button {
+    width: 28px;
+    height: 28px;
+
+    font-size: 15px;
+}
+.input-box {
+    gap: 8px;
+}
+
+.input-box input {
+    width: 100%;
+    min-height: 44px;
+}
+
+.input-box #addBtn {
+    width: 100%;
+    min-height: 44px;
+}
+.title-box {
+    width: 100%;
+}
+
+.title-box h1 {
+    font-size: 22px;
+
+    margin-bottom: 20px;
+}
+
+.help-btn {
+    width: 30px;
+    height: 30px;
+
+    font-size: 16px;
+
+    right: 0;
+    top: 0;
+}
+.help-modal {
+    padding: 15px;
+}
+
+.help-content {
+    width: 100%;
+    max-width: 360px;
+
+    max-height: 85vh;
+
+    overflow-y: auto;
+
+    padding: 22px 18px;
+
+    border-radius: 18px;
+}
+
+.help-content h2 {
+    font-size: 20px;
+
+    margin-bottom: 20px;
+}
+
+.help-item {
+    gap: 10px;
+
+    margin-bottom: 13px;
+}
+
+.help-item p {
+    font-size: 12px;
+
+    line-height: 1.8;
+}
+input {
+    font-size: 16px;
+}
 }
 /* =========================
    Task Actions
