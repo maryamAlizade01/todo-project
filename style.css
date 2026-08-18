@@ -143,22 +143,30 @@ ul {
 .task-row {
     display: flex;
     align-items: center;
+
     gap: 12px;
+
     direction: ltr;
+
     margin-bottom: 12px;
+
     user-select: none;
-    -webkit-user-select: none ;
+    -webkit-user-select: none;
 }
 
 .task-row li {
-    height: 30px;
+    min-height: 30px;
+    height: auto;
+
     flex: 1;
+
     margin: 0;
+
     direction: rtl;
+
     border-radius: 50px;
 
     min-width: 0;
-
 }
 
 .task-row li span {
@@ -195,14 +203,30 @@ ul {
 ========================= */
 
 .task-row.completed li {
-    background-color: #e2aef0;
+    background-color: transparent;
 }
 
+.task-row.completed .task-info {
+    background-color: #9d3bb8;
+
+    border-radius: 50px;
+
+    padding: 4px 12px;
+
+    box-sizing: border-box;
+}
 .task-row.completed .completeBtn {
     background-color: #9d3bb8;
     color: white;
     box-shadow: 0  0 10px 3px rgba(210, 149, 233, 0.86);
 
+}
+
+.task-row.completed .task-date {
+    color: #9d3bb8;
+}
+.task-row.completed .task-category {
+    color: #9d3bb8;
 }
 
 /* =========================
@@ -737,4 +761,215 @@ input {
     background: white;
 
     box-shadow: 0 8px 18px rgba(199, 102, 234, 0.3);
+}
+.theme-btn {
+    position: absolute;
+
+    right: 40px;
+    top: 0;
+
+    width: 32px;
+    height: 32px;
+
+    padding: 0;
+
+    border-radius: 50%;
+
+    background: #f1d8f5;
+    color: #891ba8;
+
+    font-size: 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.theme-btn:hover {
+    transform: none;
+    box-shadow: none;
+}
+body.dark {
+    background: #1d1520;
+}
+
+body.dark .container {
+    background: #29202d;
+}
+
+body.dark h1 {
+    color: #f4e8f6;
+}
+
+body.dark input {
+    background: #211a24;
+    color: white;
+    border-color: #49384f;
+}
+
+body.dark input::placeholder {
+    color: #9f91a3;
+}
+
+body.dark .task-row li {
+    color: #f4e8f6;
+}
+
+body.dark .task-counter {
+    color: #d9c8dd;
+}
+
+body.dark .filter-btn {
+    background: #49304f;
+    color: #ead8ef;
+}
+
+body.dark .filter-btn.active {
+    background: #891ba8;
+    color: white;
+}
+
+body.dark .search-box input {
+    background: #211a24;
+    color: white;
+    border-color: #49384f;
+}
+
+body.dark .help-btn,
+body.dark .theme-btn {
+    background: #49304f;
+    color: #e9c9f0;
+}
+body.dark .completeBtn {
+    background: transparent;
+    border: 2px solid #e6e4e4d6;
+    color: transparent;
+}
+.task-date {
+    grid-column: 1;
+
+    display: block;
+
+    margin: 0;
+
+    font-size: 10px;
+
+    line-height: 1.3;
+
+    color: #a99aaa;
+
+    direction: rtl;
+    text-align: left;
+}
+.task-category {
+    grid-column: 2;
+
+    align-self: center;
+    justify-self: end;
+
+    display: inline-block;
+
+    width: fit-content;
+
+    margin: 0;
+
+    padding: 2px 8px;
+
+    border-radius: 20px;
+
+    font-size: 9px;
+    font-weight: 600;
+
+    direction: rtl;
+}
+.task-category.personal {
+    background: #f1d8f5;
+    color: #891ba8;
+}
+
+.task-category.study {
+    background: #dceeff;
+    color: #3974a8;
+}
+
+.task-category.work {
+    background: #ddf5df;
+    color: #3d8745;
+}
+.category-filter-box {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+
+    margin-top: 10px;
+
+    flex-wrap: wrap;
+}
+
+.category-filter-btn {
+    padding: 6px 12px;
+
+    border: none;
+    border-radius: 20px;
+
+    background: #f3edf5;
+    color: #6d5572;
+
+    font-family: inherit;
+    font-size: 11px;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.category-filter-btn:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.category-filter-btn.active {
+    background: #891ba8;
+    color: white;
+}
+.task-info {
+    display: grid;
+
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+
+    flex: 1;
+    min-width: 0;
+
+    column-gap: 8px;
+    row-gap: 0;
+
+    direction: ltr;
+}
+.task-info > span {
+    grid-column: 1 / -1;
+
+    line-height: 1.3;
+}
+
+.task-info span {
+    display: block;
+
+    line-height: 1.6;
+}
+
+.task-info .task-category {
+    display: inline-block;
+
+    align-self: flex-start;
+
+    margin: 0;
+}
+
+.task-info .task-date {
+    display: block;
+
+    margin: 0;
+
+    line-height: 1.5;
 }

@@ -1,11 +1,13 @@
 
 const taskInput = document.getElementById("taskInput");
+const categoryInput = document.getElementById("categoryInput");
 const addBtn = document.getElementById("addBtn");
 const taskList = document.getElementById("taskList");
 
 const taskCount = document.getElementById("taskCount");
 const searchInput = document.getElementById("searchInput");
 const filterButtons = document.querySelectorAll(".filter-btn");
+const categoryFilterButtons = document.querySelectorAll(".category-filter-btn");
 
 const toast = document.getElementById("toast");
 
@@ -13,6 +15,24 @@ const helpBtn = document.getElementById("helpBtn");
 const helpModal = document.getElementById("helpModal");
 const closeHelp = document.getElementById("closeHelp");
 const helpContent = document.querySelector(".help-content");
+const themeBtn = document.getElementById("themeBtn");
+themeBtn.addEventListener("click", function () {
+    document.body.classList.toggle("dark");
+
+    if (document.body.classList.contains("dark")) {
+        localStorage.setItem("theme", "dark");
+        themeBtn.textContent = "☀";
+    } else {
+        localStorage.setItem("theme", "light");
+        themeBtn.textContent = "☾";
+    }
+});
+const savedTheme = localStorage.getItem("theme");
+
+if (savedTheme === "dark") {
+    document.body.classList.add("dark");
+    themeBtn.textContent = "☾";
+}
 
 
 function showToast(message, showUndo = false) {
@@ -84,6 +104,7 @@ let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
     let deletedTaskIndex = null;
     let undoTimer = null;
     let currentFilter = "all";
+    let currentCategory = "all";
 
     function updateTaskCount() {
     const remainingTasks = tasks.filter(function (task) {
@@ -115,6 +136,7 @@ function filterTasks(filter) {
     });
 }
 function searchTasks() {
+
     const searchText = searchInput.value.trim().toLowerCase();
 
     const taskRows = document.querySelectorAll(".task-row");
@@ -123,7 +145,8 @@ function searchTasks() {
 
         const task = taskRow.taskData;
 
-        const matchesSearch = task.text.toLowerCase().includes(searchText);
+        const matchesSearch =
+            task.text.toLowerCase().includes(searchText);
 
         let matchesFilter = true;
 
@@ -135,7 +158,18 @@ function searchTasks() {
             matchesFilter = task.completed;
         }
 
-        if (matchesSearch && matchesFilter) {
+        let matchesCategory = true;
+
+        if (currentCategory !== "all") {
+            matchesCategory =
+                task.category === currentCategory;
+        }
+
+        if (
+            matchesSearch &&
+            matchesFilter &&
+            matchesCategory
+        ) {
             taskRow.style.display = "flex";
         } else {
             taskRow.style.display = "none";
@@ -164,6 +198,22 @@ filterButtons.forEach(function (button) {
     });
 
 });
+categoryFilterButtons.forEach(function (button) {
+
+    button.addEventListener("click", function () {
+
+        categoryFilterButtons.forEach(function (btn) {
+            btn.classList.remove("active");
+        });
+
+        button.classList.add("active");
+
+        currentCategory = button.dataset.category;
+
+        searchTasks();
+    });
+
+});
 function createTask(task) {
 
     
@@ -179,14 +229,78 @@ function createTask(task) {
 
     const taskText = document.createElement("span");
     taskText.textContent = task.text;
+    const taskCategory = document.createElement("small");
+
+if (task.category === "personal") {
+    taskCategory.textContent = "شخصی";
+}
+
+if (task.category === "study") {
+    taskCategory.textContent = "درس";
+}
+
+if (task.category === "work") {
+    taskCategory.textContent = "کار";
+}
+
+taskCategory.classList.add("task-category", task.category);
+    const taskDate = document.createElement("small");
+
+if (task.createdAt) {
+
+    const date = new Date(task.createdAt);
+
+    const today = new Date();
+
+    const startOfToday = new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate()
+    );
+
+    const startOfDate = new Date(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate()
+    );
+
+    const difference =
+        (startOfToday - startOfDate) / (1000 * 60 * 60 * 24);
+
+    const time = date.toLocaleTimeString("fa-IR", {
+        hour: "2-digit",
+        minute: "2-digit"
+    });
+
+    if (difference === 0) {
+
+        taskDate.textContent = "امروز - " + time;
+
+    } else if (difference === 1) {
+
+        taskDate.textContent = "دیروز - " + time;
+
+    } else {
+
+        taskDate.textContent =
+            date.toLocaleDateString("fa-IR") +
+            " - " +
+            time;
+    }
+}
+taskDate.classList.add("task-date");
     if (task.completed) {
     taskRow.classList.add("completed");
 }
 
     // ساخت دکمه تیک
     const completeBtn = document.createElement("button");
-    completeBtn.textContent = "✓";
+
     completeBtn.classList.add("completeBtn");
+ 
+    if (task.completed) {
+    completeBtn.textContent = "✓";
+    }
     // ساخت بخش گزینه‌ها
     const taskActions = document.createElement("div");
     taskActions.classList.add("task-actions");
@@ -288,6 +402,12 @@ function createTask(task) {
 
     task.completed = !task.completed;
 
+    if (task.completed) {
+    completeBtn.textContent = "✓";
+    } else {
+    completeBtn.textContent = "";
+    }
+
     taskRow.classList.toggle("completed");
 
     localStorage.setItem("tasks", JSON.stringify(tasks));
@@ -296,7 +416,15 @@ function createTask(task) {
 });
 
     // قرار دادن متن داخل کادر
-    li.appendChild(taskText);
+    const taskInfo = document.createElement("div");
+
+    taskInfo.classList.add("task-info");
+
+    taskInfo.appendChild(taskText);
+    taskInfo.appendChild(taskDate);
+    taskInfo.appendChild(taskCategory);
+    
+    li.appendChild(taskInfo);
 
     // قرار دادن دکمه و کادر کنار هم
     taskRow.appendChild(completeBtn);
@@ -348,8 +476,10 @@ addBtn.addEventListener("click", function () {
     }
 
     const newTask = {
-        text: task,
-        completed: false
+    text: task,
+    completed: false,
+    createdAt: new Date().toISOString(),
+    category: categoryInput.value
     };
 
     tasks.push(newTask);

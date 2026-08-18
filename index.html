@@ -12,9 +12,15 @@
             <h1>لیست کار ها</h1>
 
             <button id="helpBtn" class="help-btn">ⓘ</button>
+            <button id="themeBtn" class="theme-btn">☾</button>
         </div>
         <div class="input-box">
             <input class="text" id="taskInput" placeholder="کار جدید را وارد کنید ...">
+               <select id="categoryInput">
+                   <option value="personal">شخصی</option>
+                   <option value="study">درس</option>
+                   <option value="work">کار</option>
+               </select>
             <button id="addBtn">افزودن</button>
         </div>
         <div class="task-counter">
@@ -32,6 +38,25 @@
             <button class="filter-btn active" data-filter="all">همه</button>
             <button class="filter-btn" data-filter="active">انجام نشده</button>
             <button class="filter-btn" data-filter="completed">انجام شده</button>
+        </div>
+        <div class="category-filter-box">
+
+            <button class="category-filter-btn active" data-category="all">
+             همه
+           </button>
+
+           <button class="category-filter-btn" data-category="personal">
+            شخصی
+           </button>
+
+           <button class="category-filter-btn" data-category="study">
+            درس
+           </button>
+
+           <button class="category-filter-btn" data-category="work">
+           کار
+          </button>
+
         </div>
         <ul id="taskList"></ul>
         <div id="helpModal" class="help-modal">
