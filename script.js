@@ -453,11 +453,10 @@ taskDate.classList.add("task-date");
     li.appendChild(taskInfo);
 
     // قرار دادن دکمه و کادر کنار هم
+    taskRow.appendChild(swipeDelete);
     taskRow.appendChild(completeBtn);
     taskRow.appendChild(li);
     taskRow.appendChild(taskActions);
-    taskRow.appendChild(swipeDelete);
-
     let startX = 0;
 let currentX = 0;
 
