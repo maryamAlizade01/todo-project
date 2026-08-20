@@ -475,10 +475,10 @@ taskRow.addEventListener("touchmove", function (event) {
 
     const distance = currentX - startX;
 
-    // فقط کشیدن به سمت چپ
-    if (distance < 0) {
+    // فقط کشیدن به سمت راست
+    if (distance > 0) {
 
-        const move = Math.max(distance, -60);
+        const move = Math.min(distance, 60);
 
         taskRow.style.transform = `translateX(${move}px)`;
 
@@ -487,6 +487,25 @@ taskRow.addEventListener("touchmove", function (event) {
 
 });
 
+
+taskRow.addEventListener("touchend", function () {
+
+    const distance = currentX - startX;
+
+    if (distance > 30) {
+
+        taskRow.style.transform = "translateX(60px)";
+
+        swipeDelete.style.display = "flex";
+
+    } else {
+
+        taskRow.style.transform = "translateX(0)";
+
+        swipeDelete.style.display = "none";
+    }
+
+});
 
 taskRow.addEventListener("touchend", function () {
 
