@@ -994,7 +994,17 @@ body.dark .completeBtn {
 
     cursor: pointer;
 }
+
+    /* دسکتاپ */
 .task-row:hover .task-actions {
     opacity: 1;
     pointer-events: auto;
+}
+
+/* موبایل */
+@media (max-width: 768px) {
+    .task-row .task-actions {
+        opacity: 0;
+        pointer-events: none;
+    }
 }

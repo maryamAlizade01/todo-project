@@ -309,6 +309,7 @@ taskDate.classList.add("task-date");
     deleteBtn.innerHTML = "×";
 
     deleteBtn.classList.add("deleteBtn");
+
     const swipeDelete = document.createElement("button");
 
     swipeDelete.innerHTML = "🗑";
@@ -422,6 +423,7 @@ taskDate.classList.add("task-date");
     showToast("کار حذف شد ✓", true);
 });
 
+   
     // تیک زدن / برداشتن تیک
     completeBtn.addEventListener("click", function () {
 
