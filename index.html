@@ -21,6 +21,14 @@
                    <option value="study">درس</option>
                    <option value="work">کار</option>
                </select>
+
+               <select id="priorityInput">
+                   <option value="low">کم</option>
+                   <option value="medium" selected>متوسط</option>
+                   <option value="high">زیاد</option>
+               </select>
+
+               <input type="datetime-local" id="deadlineInput">
             <button id="addBtn">افزودن</button>
         </div>
         <div class="task-counter">
@@ -58,7 +66,43 @@
           </button>
 
         </div>
-        <ul id="taskList"></ul>
+        <div class="progress-container">
+
+            <div class="progress-info">
+               <span id="progressText">0 از 0 کار انجام شده</span>
+               <span id="progressPercent">0%</span>
+            </div>
+
+            <div class="progress-bar">
+              <div id="progressFill"></div>
+            </div>
+
+        </div>
+
+        <div class="stats-container">
+
+     <div class="stat-item">
+           <span class="stat-number" id="totalStat">0</span>
+           <span class="stat-label">کل</span>
+       </div>
+
+       <div class="stat-item">
+          <span class="stat-number" id="completedStat">0</span>
+          <span class="stat-label">انجام شده</span>
+       </div>
+
+       <div class="stat-item">
+          <span class="stat-number" id="remainingStat">0</span>
+          <span class="stat-label">باقی مانده</span>
+       </div>
+
+     </div>
+
+<ul id="taskList"></ul>
+
+        <div id="reminderBox" class="reminder-box"></div>
+
+            <ul id="taskList"></ul>
         <div id="helpModal" class="help-modal">
 
             <div class="help-content">

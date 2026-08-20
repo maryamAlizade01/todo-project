@@ -1,6 +1,8 @@
 
 const taskInput = document.getElementById("taskInput");
 const categoryInput = document.getElementById("categoryInput");
+const priorityInput = document.getElementById("priorityInput");
+const deadlineInput = document.getElementById("deadlineInput");
 const addBtn = document.getElementById("addBtn");
 const taskList = document.getElementById("taskList");
 
@@ -113,6 +115,27 @@ let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
     taskCount.textContent = remainingTasks;
 }
+function updateProgress() {
+
+    const totalTasks = tasks.length;
+
+    const completedTasks = tasks.filter(function (task) {
+        return task.completed;
+    }).length;
+
+    const progress = totalTasks === 0
+        ? 0
+        : Math.round((completedTasks / totalTasks) * 100);
+
+    document.getElementById("progressText").textContent =
+        completedTasks + " از " + totalTasks + " کار انجام شده";
+
+    document.getElementById("progressPercent").textContent =
+        progress + "%";
+
+    document.getElementById("progressFill").style.width =
+        progress + "%";
+}
 
 function filterTasks(filter) {
     const taskRows = document.querySelectorAll(".task-row");
@@ -222,6 +245,30 @@ function createTask(task) {
     const taskRow = document.createElement("div");
     taskRow.classList.add("task-row");
 
+    taskRow.draggable = true;
+    
+    taskRow.addEventListener("dragstart", function () {
+    taskRow.classList.add("dragging");
+});
+
+taskRow.addEventListener("dragend", function () {
+
+    taskRow.classList.remove("dragging");
+
+    const newOrder = [];
+
+    document.querySelectorAll(".task-row").forEach(function (row) {
+
+        newOrder.push(row.taskData);
+
+    });
+
+    localStorage.setItem("tasks", JSON.stringify(newOrder));
+
+    tasks = newOrder;
+});
+
+
     taskRow.taskData = task;
 
     // ساخت کادر متن
@@ -292,6 +339,63 @@ taskDate.classList.add("task-date");
     if (task.completed) {
     taskRow.classList.add("completed");
 }
+const taskPriority = document.createElement("small");
+
+if (task.priority === "high") {
+    taskPriority.textContent = "زیاد";
+}
+
+if (task.priority === "medium") {
+    taskPriority.textContent = "متوسط";
+}
+
+if (task.priority === "low") {
+    taskPriority.textContent = "کم";
+}
+
+taskPriority.classList.add(
+    "task-priority",
+    task.priority
+);
+
+const taskDeadline = document.createElement("small");
+
+if (task.deadline) {
+
+    const deadlineDate = new Date(task.deadline);
+    const now = new Date();
+
+    const difference =
+        deadlineDate.getTime() - now.getTime();
+
+    const oneHour = 60 * 60 * 1000;
+
+    taskDeadline.classList.add("task-deadline");
+
+    if (difference < 0) {
+
+        taskDeadline.textContent = "منقضی شده";
+        taskDeadline.classList.add("expired");
+
+    } else {
+
+        taskDeadline.textContent =
+            "تا " +
+            deadlineDate.toLocaleDateString("fa-IR") +
+            " - " +
+            deadlineDate.toLocaleTimeString("fa-IR", {
+                hour: "2-digit",
+                minute: "2-digit"
+            });
+
+        if (difference <= oneHour) {
+            taskDeadline.classList.add("soon");
+        } else {
+            taskDeadline.classList.add("normal");
+        }
+    }
+
+}
 
     // ساخت دکمه تیک
     const completeBtn = document.createElement("button");
@@ -334,6 +438,9 @@ taskDate.classList.add("task-date");
     taskRow.remove();
 
     updateTaskCount();
+    updateProgress();
+    updateReminder();
+    updateStats();
 
     searchTasks();
 
@@ -416,10 +523,13 @@ taskDate.classList.add("task-date");
     taskRow.remove();
 
     updateTaskCount();
+    updateProgress();
+    updateReminder();
+    updateStats();
 
     searchTasks();
 
-    showToast("کار حذف شد ✓", true);
+    showToast("کار حذف شد ✓", true);   
 });
 
    
@@ -449,6 +559,8 @@ taskDate.classList.add("task-date");
     taskInfo.appendChild(taskText);
     taskInfo.appendChild(taskDate);
     taskInfo.appendChild(taskCategory);
+    taskInfo.appendChild(taskPriority);
+    taskInfo.appendChild(taskDeadline);
     
     li.appendChild(taskInfo);
 
@@ -558,9 +670,10 @@ addBtn.addEventListener("click", function () {
     text: task,
     completed: false,
     createdAt: new Date().toISOString(),
-    category: categoryInput.value
-    };
-
+    category: categoryInput.value,
+    priority: priorityInput.value,
+    deadline: deadlineInput.value
+};
     tasks.push(newTask);
 
     localStorage.setItem("tasks", JSON.stringify(tasks));
@@ -568,6 +681,9 @@ addBtn.addEventListener("click", function () {
     createTask(newTask);
 
     updateTaskCount();
+    updateProgress();
+    updateReminder();
+    updateStats();
 
     searchTasks();
 
@@ -617,3 +733,127 @@ document.addEventListener("click", function () {
         helpModal.style.display = "none";
     }
 });
+taskList.addEventListener("dragover", function (event) {
+
+    event.preventDefault();
+
+    const draggingTask = document.querySelector(".dragging");
+
+    if (!draggingTask) {
+        return;
+    }
+
+    const rows = [
+        ...taskList.querySelectorAll(".task-row:not(.dragging)")
+    ];
+
+    let nextTask = null;
+
+    for (const row of rows) {
+
+        const box = row.getBoundingClientRect();
+
+        if (event.clientY < box.top + box.height / 2) {
+            nextTask = row;
+            break;
+        }
+    }
+
+    if (nextTask) {
+
+        if (nextTask.previousElementSibling !== draggingTask) {
+            taskList.insertBefore(draggingTask, nextTask);
+        }
+
+    } else {
+
+        if (taskList.lastElementChild !== draggingTask) {
+            taskList.appendChild(draggingTask);
+        }
+    }
+
+});
+function updateReminder() {
+
+    const reminderBox = document.getElementById("reminderBox");
+
+    if (!reminderBox) {
+        return;
+    }
+
+    const now = new Date();
+
+    const upcomingTasks = tasks
+        .filter(function (task) {
+            return task.deadline && !task.completed;
+        })
+        .map(function (task) {
+
+            return {
+                task: task,
+                timeLeft:
+                    new Date(task.deadline).getTime() -
+                    now.getTime()
+            };
+
+        })
+        .filter(function (item) {
+
+            return item.timeLeft > 0 &&
+                   item.timeLeft <= 60 * 60 * 1000;
+
+        })
+        .sort(function (a, b) {
+
+            return a.timeLeft - b.timeLeft;
+
+        });
+
+    if (upcomingTasks.length === 0) {
+
+        reminderBox.style.display = "none";
+        reminderBox.textContent = "";
+
+        return;
+    }
+
+    const nearest = upcomingTasks[0];
+
+    const minutes = Math.ceil(
+        nearest.timeLeft / (60 * 1000)
+    );
+
+    reminderBox.textContent =
+        "🔔 مهلت «" +
+        nearest.task.text +
+        "» تا " +
+        minutes +
+        " دقیقه دیگر است.";
+
+    reminderBox.style.display = "block";
+}
+updateReminder();
+updateStats();
+
+setInterval(function () {
+    updateReminder();
+}, 60000);
+
+function updateStats() {
+
+    const totalTasks = tasks.length;
+
+    const completedTasks = tasks.filter(function (task) {
+        return task.completed;
+    }).length;
+
+    const remainingTasks = totalTasks - completedTasks;
+
+    document.getElementById("totalStat").textContent = totalTasks;
+
+    document.getElementById("completedStat").textContent =
+        completedTasks;
+
+    document.getElementById("remainingStat").textContent =
+        remainingTasks;
+}
