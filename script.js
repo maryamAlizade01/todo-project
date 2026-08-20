@@ -463,6 +463,7 @@ let currentX = 0;
 taskRow.addEventListener("touchstart", function (event) {
 
     startX = event.touches[0].clientX;
+    currentX = startX;
 
 }, { passive: true });
 
@@ -473,8 +474,14 @@ taskRow.addEventListener("touchmove", function (event) {
 
     const distance = currentX - startX;
 
-    if (distance > 0 && distance < 100) {
-        taskRow.style.transform = `translateX(${distance}px)`;
+    // فقط کشیدن به سمت چپ
+    if (distance < 0) {
+
+        const move = Math.max(distance, -60);
+
+        taskRow.style.transform = `translateX(${move}px)`;
+
+        swipeDelete.style.display = "flex";
     }
 
 });
@@ -484,20 +491,17 @@ taskRow.addEventListener("touchend", function () {
 
     const distance = currentX - startX;
 
-    if (distance > 50) {
+    if (distance < -30) {
 
-        taskRow.style.transform = "translateX(50px)";
+        taskRow.style.transform = "translateX(-60px)";
 
-        swipeDelete.style.opacity = "1";
-        swipeDelete.style.pointerEvents = "auto";
+        swipeDelete.style.display = "flex";
 
     } else {
 
         taskRow.style.transform = "translateX(0)";
 
-        swipeDelete.style.opacity = "0";
-        swipeDelete.style.pointerEvents = "none";
-
+        swipeDelete.style.display = "none";
     }
 
 });

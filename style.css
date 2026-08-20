@@ -985,18 +985,14 @@ body.dark .completeBtn {
 
     font-size: 18px;
 
-    display: flex;
+    display: none;
+
     align-items: center;
     justify-content: center;
 
     flex-shrink: 0;
 
     cursor: pointer;
-
-    opacity: 0;
-    pointer-events: none;
-
-    transition: 0.2s;
 }
 .task-row:hover .task-actions {
     opacity: 1;
