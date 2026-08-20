@@ -390,7 +390,6 @@ taskDate.classList.add("task-date");
         }
     });
 
-    taskRow.classList.remove("show-actions");
 });
 
 
@@ -513,12 +512,6 @@ taskRow.addEventListener("touchend", function () {
     // نگه داشتن روی تسک
     let pressTimer;
 
-    taskRow.addEventListener("mousedown", function () {
-         pressTimer = setTimeout(function () {
-             taskRow.classList.toggle("show-actions");
-         }, 600);
-});
-
     taskRow.addEventListener("mouseup", function () {
          clearTimeout(pressTimer);
 });
@@ -527,14 +520,6 @@ taskRow.addEventListener("touchend", function () {
          clearTimeout(pressTimer);
 });
 // نگه داشتن روی تسک در موبایل
-    taskRow.addEventListener("touchstart", function () {
-
-    pressTimer = setTimeout(function () {
-
-        taskRow.classList.toggle("show-actions");
-
-    }, 600);
-});
 
     taskRow.addEventListener("touchend", function () {
          clearTimeout(pressTimer);
