@@ -304,16 +304,45 @@ taskDate.classList.add("task-date");
     // ساخت بخش گزینه‌ها
     const taskActions = document.createElement("div");
     taskActions.classList.add("task-actions");
+    const deleteBtn = document.createElement("button");
+
+    deleteBtn.innerHTML = "×";
+
+    deleteBtn.classList.add("deleteBtn");
+    const swipeDelete = document.createElement("button");
+
+    swipeDelete.innerHTML = "🗑";
+    swipeDelete.classList.add("swipe-delete");
+
+    swipeDelete.addEventListener("click", function (event) {
+    event.stopPropagation();
+
+    const taskIndex = tasks.indexOf(task);
+
+    if (taskIndex === -1) {
+        return;
+    }
+
+    deletedTask = task;
+    deletedTaskIndex = taskIndex;
+
+    tasks.splice(taskIndex, 1);
+
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+
+    taskRow.remove();
+
+    updateTaskCount();
+
+    searchTasks();
+
+    showToast("کار حذف شد ✓", true);
+});
 
     // دکمه ویرایش
     const editBtn = document.createElement("button");
     editBtn.innerHTML = "✎";
     editBtn.classList.add("editBtn");
-
-    // دکمه حذف
-    const deleteBtn = document.createElement("button");
-    deleteBtn.innerHTML = "×";
-    deleteBtn.classList.add("deleteBtn");
 
 
   // ویرایش تسک
@@ -364,8 +393,10 @@ taskDate.classList.add("task-date");
 });
 
 
-   // حذف تسک
-    deleteBtn.addEventListener("click", function (event) {
+   taskActions.appendChild(editBtn);
+   taskActions.appendChild(deleteBtn);
+
+   deleteBtn.addEventListener("click", function (event) {
 
     event.stopPropagation();
 
@@ -390,12 +421,6 @@ taskDate.classList.add("task-date");
 
     showToast("کار حذف شد ✓", true);
 });
-
-
-
-    // قرار دادن دکمه‌ها داخل بخش گزینه‌ها
-    taskActions.appendChild(editBtn);
-    taskActions.appendChild(deleteBtn);
 
     // تیک زدن / برداشتن تیک
     completeBtn.addEventListener("click", function () {
@@ -430,7 +455,52 @@ taskDate.classList.add("task-date");
     taskRow.appendChild(completeBtn);
     taskRow.appendChild(li);
     taskRow.appendChild(taskActions);
+    taskRow.appendChild(swipeDelete);
 
+    let startX = 0;
+let currentX = 0;
+
+taskRow.addEventListener("touchstart", function (event) {
+
+    startX = event.touches[0].clientX;
+
+}, { passive: true });
+
+
+taskRow.addEventListener("touchmove", function (event) {
+
+    currentX = event.touches[0].clientX;
+
+    const distance = currentX - startX;
+
+    if (distance > 0 && distance < 100) {
+        taskRow.style.transform = `translateX(${distance}px)`;
+    }
+
+});
+
+
+taskRow.addEventListener("touchend", function () {
+
+    const distance = currentX - startX;
+
+    if (distance > 50) {
+
+        taskRow.style.transform = "translateX(50px)";
+
+        swipeDelete.style.opacity = "1";
+        swipeDelete.style.pointerEvents = "auto";
+
+    } else {
+
+        taskRow.style.transform = "translateX(0)";
+
+        swipeDelete.style.opacity = "0";
+        swipeDelete.style.pointerEvents = "none";
+
+    }
+
+});
     // اضافه کردن به لیست
     taskList.appendChild(taskRow);
 
