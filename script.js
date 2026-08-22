@@ -2,7 +2,13 @@
 const taskInput = document.getElementById("taskInput");
 const categoryInput = document.getElementById("categoryInput");
 const priorityInput = document.getElementById("priorityInput");
-const deadlineInput = document.getElementById("deadlineInput");
+const deadlineDate = document.getElementById("deadlineDate");
+const deadlineTime = document.getElementById("deadlineTime");
+const statusFilter = document.getElementById("statusFilter");
+const categoryFilter = document.getElementById("categoryFilter");
+const priorityFilter = document.getElementById("priorityFilter");
+const resetFilters = document.getElementById("resetFilters");
+const sortInput = document.getElementById("sortInput");
 const addBtn = document.getElementById("addBtn");
 const taskList = document.getElementById("taskList");
 
@@ -66,8 +72,16 @@ function showToast(message, showUndo = false) {
             // ذخیره
             localStorage.setItem("tasks", JSON.stringify(tasks));
 
-            // اضافه کردن دوباره به صفحه
-            createTask(deletedTask);
+            insertingTaskIndex = deletedTaskIndex;
+
+            taskList.innerHTML = "";
+
+            tasks.forEach(function (task) {
+            createTask(task);
+         });
+
+            insertingTaskIndex = null; 
+        
 
             updateTaskCount();
 
@@ -81,6 +95,7 @@ function showToast(message, showUndo = false) {
             deletedTaskIndex = null;
 
             clearTimeout(undoTimer);
+    
         };
 
         toast.appendChild(undoBtn);
@@ -104,9 +119,15 @@ let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
     let deletedTask = null;
     let deletedTaskIndex = null;
+    let deletedTaskElement = null;
     let undoTimer = null;
+    let insertingTaskIndex = null;
+
     let currentFilter = "all";
     let currentCategory = "all";
+
+    let visibleTaskCount = 5;
+    const tasksPerPage = 5;
 
     function updateTaskCount() {
     const remainingTasks = tasks.filter(function (task) {
@@ -199,6 +220,7 @@ function searchTasks() {
         }
 
     });
+    updateShowMoreButton();
 }
 searchInput.addEventListener("input", function () {
     searchTasks();
@@ -244,6 +266,8 @@ function createTask(task) {
     // ساخت ردیف کار
     const taskRow = document.createElement("div");
     taskRow.classList.add("task-row");
+
+    taskRow.taskData = task;
 
     taskRow.draggable = true;
     
@@ -374,27 +398,58 @@ if (task.deadline) {
 
     if (difference < 0) {
 
-        taskDeadline.textContent = "منقضی شده";
+        taskDeadline.textContent = "🔴 منقضی شده";
         taskDeadline.classList.add("expired");
 
     } else {
 
+        const totalMinutes =
+            Math.ceil(difference / (60 * 1000));
+
+        const days = Math.floor(totalMinutes / (60 * 24));
+
+        const hours = Math.floor(
+            (totalMinutes % (60 * 24)) / 60
+        );
+
+        const minutes =
+            totalMinutes % 60;
+
+        let remainingText = "";
+
+        if (days > 0) {
+
+            remainingText += days + " روز ";
+
+        }
+
+        if (hours > 0) {
+
+            remainingText += hours + " ساعت ";
+
+        }
+
+        if (minutes > 0 && days === 0) {
+
+            remainingText += minutes + " دقیقه ";
+
+        }
+
         taskDeadline.textContent =
-            "تا " +
-            deadlineDate.toLocaleDateString("fa-IR") +
-            " - " +
-            deadlineDate.toLocaleTimeString("fa-IR", {
-                hour: "2-digit",
-                minute: "2-digit"
-            });
+            "⏳ " +
+            remainingText +
+            "باقی مانده";
 
         if (difference <= oneHour) {
+
             taskDeadline.classList.add("soon");
+
         } else {
+
             taskDeadline.classList.add("normal");
+
         }
     }
-
 }
 
     // ساخت دکمه تیک
@@ -429,6 +484,7 @@ if (task.deadline) {
     }
 
     deletedTask = task;
+
     deletedTaskIndex = taskIndex;
 
     tasks.splice(taskIndex, 1);
@@ -441,6 +497,7 @@ if (task.deadline) {
     updateProgress();
     updateReminder();
     updateStats();
+    updateShowMoreButton();
 
     searchTasks();
 
@@ -526,6 +583,7 @@ if (task.deadline) {
     updateProgress();
     updateReminder();
     updateStats();
+    updateShowMoreButton();
 
     searchTasks();
 
@@ -539,9 +597,9 @@ if (task.deadline) {
     task.completed = !task.completed;
 
     if (task.completed) {
-    completeBtn.textContent = "✓";
+        completeBtn.textContent = "✓";
     } else {
-    completeBtn.textContent = "";
+        completeBtn.textContent = "";
     }
 
     taskRow.classList.toggle("completed");
@@ -549,8 +607,10 @@ if (task.deadline) {
     localStorage.setItem("tasks", JSON.stringify(tasks));
 
     updateTaskCount();
+    updateProgress();
+    updateReminder();
+    updateStats();
 });
-
     // قرار دادن متن داخل کادر
     const taskInfo = document.createElement("div");
 
@@ -656,6 +716,57 @@ taskRow.addEventListener("touchend", function () {
 });
 
 }
+function renderVisibleTasks() {
+
+    taskList.innerHTML = "";
+
+    const visibleTasks = tasks.slice(0, visibleTaskCount);
+
+    visibleTasks.forEach(function (task) {
+        createTask(task);
+    });
+
+    updateShowMoreButton();
+}
+function updateShowMoreButton() {
+
+    const showMoreBtn = document.getElementById("showMoreBtn");
+
+    if (!showMoreBtn) {
+        return;
+    }
+
+    if (tasks.length <= 5) {
+
+        showMoreBtn.style.display = "none";
+        return;
+    }
+
+    showMoreBtn.style.display = "block";
+
+    if (visibleTaskCount >= tasks.length) {
+
+        showMoreBtn.textContent = "نمایش کمتر ↑";
+
+    } else {
+
+        showMoreBtn.textContent = "نمایش بیشتر ↓";
+    }
+}
+document.getElementById("showMoreBtn").addEventListener("click", function () {
+
+    if (visibleTaskCount >= tasks.length) {
+
+        visibleTaskCount = 5;
+
+    } else {
+
+        visibleTaskCount += tasksPerPage;
+    }
+
+    renderVisibleTasks();
+
+});
 
 addBtn.addEventListener("click", function () {
 
@@ -665,15 +776,60 @@ addBtn.addEventListener("click", function () {
         alert("لطفاً یک کار را وارد کنید ...");
         return;
     }
+    let deadline = null;
 
+if (deadlineDate.value || deadlineTime.value) {
+
+    const now = new Date();
+
+    let selectedDate = deadlineDate.value;
+    const selectedTime = deadlineTime.value || "23:59";
+
+    // اگر تاریخ وارد نشده، امروز را در نظر می‌گیریم
+    if (!selectedDate) {
+
+        selectedDate = now.toISOString().split("T")[0];
+
+        // اگر ساعت انتخاب‌شده گذشته باشد، فردا را در نظر می‌گیریم
+        if (deadlineTime.value) {
+
+            const [hours, minutes] =
+                deadlineTime.value.split(":");
+
+            const deadlineToday = new Date();
+
+            deadlineToday.setHours(
+                Number(hours),
+                Number(minutes),
+                0,
+                0
+            );
+
+            if (deadlineToday <= now) {
+
+                const tomorrow = new Date(now);
+
+                tomorrow.setDate(
+                    tomorrow.getDate() + 1
+                );
+
+                selectedDate =
+                    tomorrow.toISOString().split("T")[0];
+            }
+        }
+    }
+
+    deadline = selectedDate + "T" + selectedTime;
+}
     const newTask = {
     text: task,
     completed: false,
     createdAt: new Date().toISOString(),
     category: categoryInput.value,
     priority: priorityInput.value,
-    deadline: deadlineInput.value
+    deadline: deadline
 };
+
     tasks.push(newTask);
 
     localStorage.setItem("tasks", JSON.stringify(tasks));
@@ -681,6 +837,7 @@ addBtn.addEventListener("click", function () {
     createTask(newTask);
 
     updateTaskCount();
+    updateShowMoreButton();
     updateProgress();
     updateReminder();
     updateStats();
@@ -857,3 +1014,176 @@ function updateStats() {
     document.getElementById("remainingStat").textContent =
         remainingTasks;
 }
+
+function applyFilter() {
+
+    const statusValue = statusFilter.value;
+    const categoryValue = categoryFilter.value;
+    const priorityValue = priorityFilter.value;
+
+    const rows = document.querySelectorAll(".task-row");
+
+    rows.forEach(function (row) {
+
+        const task = row.taskData;
+
+        if (!task) {
+            return;
+        }
+
+        let showTask = true;
+
+        if (statusValue === "active" && task.completed) {
+            showTask = false;
+        }
+
+        if (statusValue === "completed" && !task.completed) {
+            showTask = false;
+        }
+
+        if (
+            categoryValue !== "all" &&
+            task.category !== categoryValue
+        ) {
+            showTask = false;
+        }
+
+        if (
+            priorityValue !== "all" &&
+            task.priority !== priorityValue
+        ) {
+            showTask = false;
+        }
+
+        row.style.display = showTask ? "" : "none";
+    });
+}
+statusFilter.addEventListener("change", applyFilter);
+categoryFilter.addEventListener("change", applyFilter);
+priorityFilter.addEventListener("change", applyFilter);
+
+function applySort() {
+
+    const sortValue = sortInput.value;
+
+    tasks.sort(function (a, b) {
+
+        if (sortValue === "newest") {
+            return new Date(b.createdAt) - new Date(a.createdAt);
+        }
+
+        if (sortValue === "oldest") {
+            return new Date(a.createdAt) - new Date(b.createdAt);
+        }
+
+        if (sortValue === "priority") {
+
+    const priorityOrder = {
+        high: 3,
+        medium: 2,
+        low: 1
+    };
+
+    // اولویت بالاتر اول
+    const priorityDifference =
+        priorityOrder[b.priority] -
+        priorityOrder[a.priority];
+
+    if (priorityDifference !== 0) {
+        return priorityDifference;
+    }
+
+    // داخل یک اولویت، انجام‌نشده‌ها اول
+    if (a.completed !== b.completed) {
+        return a.completed ? 1 : -1;
+    }
+
+    return 0;
+}
+        if (sortValue === "deadline") {
+
+            if (!a.deadline) return 1;
+            if (!b.deadline) return -1;
+
+            return new Date(a.deadline) -
+                   new Date(b.deadline);
+        }
+
+        return 0;
+    });
+
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+
+    taskList.innerHTML = "";
+
+const visibleTasks = tasks.slice(0, visibleTaskCount);
+
+visibleTasks.forEach(function (task) {
+    createTask(task);
+});
+
+applyFilter();
+updateShowMoreButton();
+}
+sortInput.addEventListener("change", function () {
+    applySort();
+});
+resetFilters.addEventListener("click", function () {
+
+    statusFilter.value = "all";
+    categoryFilter.value = "all";
+    priorityFilter.value = "all";
+    sortInput.value = "newest";
+
+    applySort();
+    applyFilter();
+});
+updateShowMoreButton();
+let lastScrollY = window.scrollY;
+let scrollTimer;
+
+window.addEventListener("scroll", function () {
+
+    const currentScrollY = window.scrollY;
+    const scrollDifference =
+        currentScrollY - lastScrollY;
+
+    const scrollAmount =
+        Math.min(Math.abs(scrollDifference) * 2, 35);
+
+    const indicator =
+        document.querySelector(".task-list-wrapper");
+
+    if (!indicator) {
+        return;
+    }
+
+    indicator.style.setProperty(
+        "--scroll-length",
+        scrollAmount + "px"
+    );
+
+    if (scrollDifference > 0) {
+
+        // اسکرول به پایین
+        indicator.classList.add("scrolling-down");
+        indicator.classList.remove("scrolling-up");
+
+    } else if (scrollDifference < 0) {
+
+        // اسکرول به بالا
+        indicator.classList.add("scrolling-up");
+        indicator.classList.remove("scrolling-down");
+    }
+
+    lastScrollY = currentScrollY;
+
+    clearTimeout(scrollTimer);
+
+    scrollTimer = setTimeout(function () {
+
+        indicator.classList.remove("scrolling-down");
+        indicator.classList.remove("scrolling-up");
+
+    }, 120);
+});

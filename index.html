@@ -28,7 +28,10 @@
                    <option value="high">زیاد</option>
                </select>
 
-               <input type="datetime-local" id="deadlineInput">
+               <input type="date" id="deadlineDate">
+
+               <input type="time" id="deadlineTime">
+
             <button id="addBtn">افزودن</button>
         </div>
         <div class="task-counter">
@@ -98,7 +101,48 @@
 
      </div>
 
-<ul id="taskList"></ul>
+     <div class="filter-container">
+
+    <select id="statusFilter">
+        <option value="all">همه وضعیت‌ها</option>
+        <option value="active">انجام نشده</option>
+        <option value="completed">انجام شده</option>
+    </select>
+
+    <select id="categoryFilter">
+        <option value="all">همه دسته‌ها</option>
+        <option value="personal">شخصی</option>
+        <option value="study">درس</option>
+        <option value="work">کار</option>
+    </select>
+
+    <select id="priorityFilter">
+        <option value="all">همه اولویت‌ها</option>
+        <option value="high">زیاد</option>
+        <option value="medium">متوسط</option>
+        <option value="low">کم</option>
+    </select>
+
+    <select id="sortInput">
+        <option value="newest">جدیدترین</option>
+        <option value="oldest">قدیمی‌ترین</option>
+        <option value="priority">اولویت</option>
+        <option value="deadline">نزدیک‌ترین Deadline</option>
+    </select>
+
+    <button id="resetFilters" type="button">
+    پاک کردن فیلترها
+    </button>
+</div>
+
+<div class="task-list-wrapper">
+    <ul id="taskList"></ul>
+</div>
+<div class="show-more-container">
+    <button id="showMoreBtn" type="button" style="display: none;">
+    نمایش بیشتر ↓
+</button>
+</div>
 
         <div id="reminderBox" class="reminder-box"></div>
 
