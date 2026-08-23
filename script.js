@@ -1140,50 +1140,48 @@ resetFilters.addEventListener("click", function () {
 });
 updateShowMoreButton();
 let lastScrollY = window.scrollY;
-let scrollTimer;
+let indicatorLength = 7;
 
 window.addEventListener("scroll", function () {
 
     const currentScrollY = window.scrollY;
-    const scrollDifference =
-        currentScrollY - lastScrollY;
+    const scrollDifference = currentScrollY - lastScrollY;
 
-    const scrollAmount =
-        Math.min(Math.abs(scrollDifference) * 2, 35);
-
-    const indicator =
-        document.querySelector(".task-list-wrapper");
+    const indicator = document.querySelector(".task-list-wrapper");
 
     if (!indicator) {
         return;
     }
 
-    indicator.style.setProperty(
-        "--scroll-length",
-        scrollAmount + "px"
-    );
-
+    // اسکرول به پایین
     if (scrollDifference > 0) {
 
-        // اسکرول به پایین
-        indicator.classList.add("scrolling-down");
-        indicator.classList.remove("scrolling-up");
+        indicatorLength += scrollDifference;
 
-    } else if (scrollDifference < 0) {
-
-        // اسکرول به بالا
-        indicator.classList.add("scrolling-up");
-        indicator.classList.remove("scrolling-down");
     }
 
+    // اسکرول به بالا
+    else if (scrollDifference < 0) {
+
+        indicatorLength += scrollDifference;
+    }
+
+    // حداقل اندازه = نقطه
+    if (indicatorLength < 7) {
+        indicatorLength = 7;
+    }
+
+    // حداکثر اندازه
+    const maxLength = indicator.offsetHeight;
+
+    if (indicatorLength > maxLength) {
+        indicatorLength = maxLength;
+    }
+
+    indicator.style.setProperty(
+        "--indicator-length",
+        indicatorLength + "px"
+    );
+
     lastScrollY = currentScrollY;
-
-    clearTimeout(scrollTimer);
-
-    scrollTimer = setTimeout(function () {
-
-        indicator.classList.remove("scrolling-down");
-        indicator.classList.remove("scrolling-up");
-
-    }, 120);
 });
