@@ -9,12 +9,13 @@
 <body>
     <div class="container">
         <div class="title-box">
-            <h1>لیست کار ها</h1>
-
+            
             <button id="helpBtn" class="help-btn">ⓘ</button>
             <button id="themeBtn" class="theme-btn">☾</button>
         </div>
         <div class="input-box">
+
+            <button id="addBtn">افزودن</button>
             <input class="text" id="taskInput" placeholder="کار جدید را وارد کنید ...">
                <select id="categoryInput">
                    <option value="personal">شخصی</option>
@@ -30,13 +31,12 @@
 
                <input type="date" id="deadlineDate">
 
-               <input type="time" id="deadlineTime">
+               <input type="time" id="deadlineTime" step="60">
 
-            <button id="addBtn">افزودن</button>
         </div>
         <div class="task-counter">
             <span id="taskCount">0</span>
-               کار باقی مانده
+               کار انجام شده
         </div>
         <div class="search-box">
            <input

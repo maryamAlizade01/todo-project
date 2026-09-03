@@ -39,7 +39,7 @@ li {
 ========================= */
 .container {
     width: 100%;
-    max-width: 450px;
+    max-width: 900px;
     background: #fffffff0;
     padding: 30px;
     border-radius: 24px;
@@ -65,10 +65,41 @@ h1 {
    Input + Button
 ========================= */
 .input-box {
-    display: flex;
-    gap: 10px;
+    gap: 8px;
+    direction: rtl;
+    display: grid;
+    align-items: center;
+    grid-template-columns: 80px 2fr 55px 50px 110px 110px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
+.text {
+    min-width: 380px;
+    width: 100%;
+    box-sizing: border-box;
+}
+#addBtn {
+    box-sizing: border-box;
+    width: 100%;
+}
+#categoryInput, #priorityInput {
+    box-sizing: border-box;
+    width: 100%;
+    height: 50px;
+    border: 2px solid #eee;
+    border-radius: 12px;
+    font-size: 9px;
+    font-family: 'Estedad', 'Outfit', sans-serif;
+}
+#deadlineDate, #deadlineTime {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    padding-left: 6px;
+    padding-right: 6px;
+    font-size: 12px;
+}
 input {
     flex: 1;
 
@@ -334,12 +365,9 @@ ul {
 }
 .title-box {
     width: 100%;
-}
-
-.title-box h1 {
-    font-size: 22px;
-
-    margin-bottom: 20px;
+    height: 100px;
+    display: flex;
+    justify-content: right;
 }
 
 .help-btn {
@@ -347,9 +375,6 @@ ul {
     height: 30px;
 
     font-size: 16px;
-
-    right: 0;
-    top: 0;
 }
 .help-modal {
     padding: 15px;
@@ -463,6 +488,7 @@ input {
 
 .title-box {
     display: flex;
+    height: 100px;
     align-items: center;
     justify-content: center;
     position: relative;
@@ -473,8 +499,12 @@ input {
 }
 
 .help-btn {
+
     position: absolute;
-    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    left: 0;
     top: 0;
 
     width: 32px;
@@ -488,9 +518,6 @@ input {
 
     font-size: 18px;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .help-btn:hover {
@@ -501,7 +528,6 @@ input {
 .help-modal {
     position: fixed;
     inset: 0;
-
     display: none;
 
     justify-content: center;
@@ -705,13 +731,15 @@ input {
 .filter-box {
     display: flex;
     justify-content: center;
-    gap: 8px;
+    gap: 12px;
 
     margin-top: 18px;
 }
 
 .filter-btn {
     width: auto;
+    width: 100px;
+    height: 35px;
 
     padding: 7px 14px;
 
@@ -765,7 +793,7 @@ input {
 .theme-btn {
     position: absolute;
 
-    right: 40px;
+    left: 40px;
     top: 0;
 
     width: 32px;
@@ -901,7 +929,7 @@ body.dark .completeBtn {
 .category-filter-box {
     display: flex;
     justify-content: center;
-    gap: 6px;
+    gap: 8px;
 
     margin-top: 10px;
 
@@ -910,6 +938,7 @@ body.dark .completeBtn {
 
 .category-filter-btn {
     padding: 6px 12px;
+    width: 50px;
 
     border: none;
     border-radius: 20px;
@@ -933,6 +962,22 @@ body.dark .completeBtn {
 .category-filter-btn.active {
     background: #891ba8;
     color: white;
+}
+.filter-container {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+
+    margin-top: 10px;
+
+    flex-wrap: wrap;
+}
+#statusFilter, #categoryFilter, #priorityFilter, #sortInput {
+    border-radius: 5px;
+    width: auto;
+    width: 180px;
+    font-family: 'Estedad', 'Outfit', sans-serif;
+    font-size: 10px;
 }
 .task-info {
     display: grid;
@@ -1136,8 +1181,9 @@ body.dark .completeBtn {
 }
 .stats-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
+    gap: 40px;
 
     width: 100%;
     margin-bottom: 15px;
@@ -1284,13 +1330,12 @@ body.dark .completeBtn {
 
     .input-box {
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 8px;
-    }
-
-    .input-box .text {
-        grid-column: 1 / -1;
+        align-items: center;
+        direction: rtl;
+        grid-template-columns: 110px 2fr 120px 120px 160px 140px;
         width: 100%;
+        gap: 12px;
+        box-sizing: border-box;
     }
 
     .input-box select,
@@ -1451,7 +1496,7 @@ body.dark .completeBtn {
     /* Title */
 
     .title-box {
-        min-height: 35px;
+        height: 100px;
     }
 
     .title-box h1 {
@@ -1475,6 +1520,7 @@ body.dark .completeBtn {
     .input-box {
         display: flex;
         flex-direction: column;
+        grid-template-columns: 1fr 1fr;
         gap: 8px;
     }
 
@@ -1768,9 +1814,6 @@ body.dark .completeBtn {
         border-radius: 18px;
     }
 
-    .title-box h1 {
-        font-size: 20px;
-    }
 
     .help-btn,
     .theme-btn {
