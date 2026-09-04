@@ -159,7 +159,7 @@ function updateProgress() {
 }
 
 function filterTasks(filter) {
-    const taskRows = document.querySelectorAll(".task-row");
+    const taskRows = document.querySelectorAll("row");
 
     taskRows.forEach(function (taskRow) {
 
@@ -463,15 +463,20 @@ if (task.deadline) {
     // ساخت بخش گزینه‌ها
     const taskActions = document.createElement("div");
     taskActions.classList.add("task-actions");
-    const deleteBtn = document.createElement("button");
 
-    deleteBtn.innerHTML = "×";
+    // دکمه سه نقطه
+    const moreBtn = document.createElement("button");
+    moreBtn.innerHTML = "⋮";
+    moreBtn.classList.add("more-btn");
 
-    deleteBtn.classList.add("deleteBtn");
+   // دکمه حذف
+   const deleteBtn = document.createElement("button"); 
+   deleteBtn.innerHTML = "×"; 
+   deleteBtn.classList.add("deleteBtn"); 
 
-    const swipeDelete = document.createElement("button");
-
-    swipeDelete.innerHTML = "🗑";
+    // دکمه حذف با Swipe
+    const swipeDelete = document.createElement("button"); 
+    swipeDelete.innerHTML = "🗑"; 
     swipeDelete.classList.add("swipe-delete");
 
     swipeDelete.addEventListener("click", function (event) {
@@ -508,6 +513,12 @@ if (task.deadline) {
     const editBtn = document.createElement("button");
     editBtn.innerHTML = "✎";
     editBtn.classList.add("editBtn");
+    // کلیک روی سه نقطه
+moreBtn.addEventListener("click", function (event) {
+    event.stopPropagation();
+
+    taskActions.classList.toggle("show-actions");
+});
 
 
   // ویرایش تسک
@@ -557,6 +568,7 @@ if (task.deadline) {
 });
 
 
+   taskActions.appendChild(moreBtn);
    taskActions.appendChild(editBtn);
    taskActions.appendChild(deleteBtn);
 

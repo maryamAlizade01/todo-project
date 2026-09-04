@@ -423,15 +423,19 @@ input {
 }
 
 .task-actions {
-    position: absolute;
     right: 15px;
     top: -9px;
-    display: flex;
     flex-direction: row;
     gap: 5px;
-    opacity: 0;
+    opacity: 1;
     pointer-events: none;
     transition: 0.2s;
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    position: relative;
+    display: flex;
+    visibility: visible;
 }
 
 .task-row.show-actions .task-actions {
@@ -975,7 +979,7 @@ body.dark .completeBtn {
 #statusFilter, #categoryFilter, #priorityFilter, #sortInput {
     border-radius: 5px;
     width: auto;
-    width: 180px;
+    width: 190px;
     font-family: 'Estedad', 'Outfit', sans-serif;
     font-size: 10px;
 }
@@ -1219,20 +1223,23 @@ body.dark .completeBtn {
 
     padding: 6px 10px;
 
-    border-radius: 10px;
+    border-radius: 20px;
 
     background: #9d3bb8;
     color: white;
 
-    font-size: 9px;
+    font-size: 12px;
 
     cursor: pointer;
 
     transition: 0.2s;
+
+    font-family: 'Estedad', 'Outfit', sans-serif;
 }
 
 #resetFilters:hover {
     transform: translateY(-1px);
+    box-shadow: none;
 }
 .task-list-wrapper {
     position: relative;
@@ -1899,3 +1906,57 @@ body.dark .completeBtn {
         touch-action: manipulation;
     }
 }
+/* دکمه سه نقطه */
+.more-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: none;
+    border: none;
+
+    font-family: 'Estedad', 'Outfit', sans-serif;
+    font-size: 50px;
+    line-height: 1;
+    cursor: pointer;
+    margin-top: 15px;
+
+    opacity: 1;
+    visibility: visible;
+}
+
+.more-btn {
+    transform: scale(1.5) !important;
+    transform-origin: center;
+}
+
+.task-actions .more-btn {
+    border: 0 !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+}
+
+.task-actions .more-btn:hover,
+.task-actions .more-btn:focus,
+.task-actions .more-btn:active {
+    border: 0 !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+}
+
+
+/* گزینه‌های ویرایش، حذف و پین در حالت عادی مخفی باشند */
+.task-actions .editBtn,
+.task-actions .deleteBtn,
+.task-actions .pinBtn {
+    display: none;
+}
+
+/* وقتی سه نقطه کلیک شد، گزینه‌ها نمایش داده شوند */
+.task-actions.show-actions .editBtn,
+.task-actions.show-actions .deleteBtn,
+.task-actions.show-actions .pinBtn {
+    display: inline-flex;
+}
+
