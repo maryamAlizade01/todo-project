@@ -130,11 +130,11 @@ let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
     const tasksPerPage = 5;
 
     function updateTaskCount() {
-    const remainingTasks = tasks.filter(function (task) {
-        return !task.completed;
+    const completedTasks = tasks.filter(function (task) {
+        return task.completed;
     }).length;
 
-    taskCount.textContent = remainingTasks;
+    taskCount.textContent = completedTasks;
 }
 function updateProgress() {
 
@@ -159,7 +159,7 @@ function updateProgress() {
 }
 
 function filterTasks(filter) {
-    const taskRows = document.querySelectorAll("row");
+    const taskRows = document.querySelectorAll(".task-row");
 
     taskRows.forEach(function (taskRow) {
 
@@ -267,6 +267,10 @@ function createTask(task) {
     const taskRow = document.createElement("div");
     taskRow.classList.add("task-row");
 
+    if (task.originalIndex === undefined) {
+    task.originalIndex = tasks.indexOf(task);
+}
+
     taskRow.taskData = task;
 
     taskRow.draggable = true;
@@ -291,9 +295,6 @@ taskRow.addEventListener("dragend", function () {
 
     tasks = newOrder;
 });
-
-
-    taskRow.taskData = task;
 
     // ساخت کادر متن
     const li = document.createElement("li");
@@ -513,10 +514,103 @@ if (task.deadline) {
     const editBtn = document.createElement("button");
     editBtn.innerHTML = "✎";
     editBtn.classList.add("editBtn");
+
+    // دکمه پین
+const pinBtn = document.createElement("button");
+
+pinBtn.innerHTML = "📌";
+pinBtn.classList.add("pinBtn");
+
+// وضعیت اولیه پین
+if (task.pinned) {
+    pinBtn.classList.add("active");
+}
+
+pinBtn.addEventListener("click", function (event) {
+
+    event.stopPropagation();
+
+    // =========================
+    // PIN
+    // =========================
+    if (!task.pinned) {
+
+        // ذخیره جای فعلی
+        task.originalIndex = tasks.indexOf(task);
+
+        // پین کردن
+        task.pinned = true;
+
+        // حذف از جای فعلی
+        const index = tasks.indexOf(task);
+
+        if (index !== -1) {
+            tasks.splice(index, 1);
+        }
+
+        // قرار دادن در ابتدای لیست
+        tasks.unshift(task);
+
+    }
+
+    // =========================
+    // UNPIN
+    // =========================
+    else {
+
+        task.pinned = false;
+
+        // حذف از جای فعلی
+        const index = tasks.indexOf(task);
+
+        if (index !== -1) {
+            tasks.splice(index, 1);
+        }
+
+        // جای قبلی
+        let oldIndex = task.originalIndex;
+
+        if (oldIndex === undefined || oldIndex > tasks.length) {
+            oldIndex = tasks.length;
+        }
+
+        // برگرداندن به جای قبلی
+        tasks.splice(oldIndex, 0, task);
+
+        delete task.originalIndex;
+    }
+
+    // ذخیره
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+
+    // ظاهر پین
+    pinBtn.classList.toggle("active", task.pinned);
+
+    // بستن منوی سه نقطه
+    taskActions.classList.remove("show-actions");
+
+    // بازسازی لیست
+    taskList.innerHTML = "";
+
+    tasks.forEach(function (task) {
+        createTask(task);
+    });
+
+    searchTasks();
+});
+
     // کلیک روی سه نقطه
 moreBtn.addEventListener("click", function (event) {
     event.stopPropagation();
 
+    // بستن منوی بقیه تسک‌ها
+    document.querySelectorAll(".task-actions.show-actions").forEach(function (actions) {
+        if (actions !== taskActions) {
+            actions.classList.remove("show-actions");
+        }
+    });
+
+    // باز / بسته کردن منوی همین تسک
     taskActions.classList.toggle("show-actions");
 });
 
@@ -571,37 +665,7 @@ moreBtn.addEventListener("click", function (event) {
    taskActions.appendChild(moreBtn);
    taskActions.appendChild(editBtn);
    taskActions.appendChild(deleteBtn);
-
-   deleteBtn.addEventListener("click", function (event) {
-
-    event.stopPropagation();
-
-    const taskIndex = tasks.indexOf(task);
-
-    if (taskIndex === -1) {
-        return;
-    }
-
-    deletedTask = task;
-    deletedTaskIndex = taskIndex;
-
-    tasks.splice(taskIndex, 1);
-
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-
-    taskRow.remove();
-
-    updateTaskCount();
-    updateProgress();
-    updateReminder();
-    updateStats();
-    updateShowMoreButton();
-
-    searchTasks();
-
-    showToast("کار حذف شد ✓", true);   
-});
-
+   taskActions.appendChild(pinBtn);
    
     // تیک زدن / برداشتن تیک
     completeBtn.addEventListener("click", function () {
@@ -690,24 +754,6 @@ taskRow.addEventListener("touchend", function () {
 
 });
 
-taskRow.addEventListener("touchend", function () {
-
-    const distance = currentX - startX;
-
-    if (distance < -30) {
-
-        taskRow.style.transform = "translateX(-60px)";
-
-        swipeDelete.style.display = "flex";
-
-    } else {
-
-        taskRow.style.transform = "translateX(0)";
-
-        swipeDelete.style.display = "none";
-    }
-
-});
     // اضافه کردن به لیست
     taskList.appendChild(taskRow);
 
@@ -728,6 +774,61 @@ taskRow.addEventListener("touchend", function () {
 });
 
 }
+
+taskList.addEventListener("click", function (event) {
+
+    const deleteBtn = event.target.closest(".deleteBtn");
+
+    if (!deleteBtn) {
+        return;
+    }
+
+    event.stopPropagation();
+
+    const taskRow = deleteBtn.closest(".task-row");
+
+    if (!taskRow) {
+        return;
+    }
+
+    const task = taskRow.taskData;
+
+    if (!task) {
+        return;
+    }
+
+    const taskIndex = tasks.indexOf(task);
+
+    if (taskIndex === -1) {
+        return;
+    }
+
+    // ذخیره برای بازگردانی
+    deletedTask = task;
+    deletedTaskIndex = taskIndex;
+
+    // حذف از آرایه
+    tasks.splice(taskIndex, 1);
+
+    // ذخیره در localStorage
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+
+    // حذف همان ردیف
+    taskRow.remove();
+
+    // آپدیت اطلاعات
+    updateTaskCount();
+    updateProgress();
+    updateReminder();
+    updateStats();
+    updateShowMoreButton();
+
+    searchTasks();
+
+    showToast("کار حذف شد ✓", true);
+});
+
+
 function renderVisibleTasks() {
 
     taskList.innerHTML = "";

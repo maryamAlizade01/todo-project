@@ -88,6 +88,7 @@ h1 {
     width: 100%;
     height: 50px;
     border: 2px solid #eee;
+    background: #fafafa;
     border-radius: 12px;
     font-size: 9px;
     font-family: 'Estedad', 'Outfit', sans-serif;
@@ -428,7 +429,6 @@ input {
     flex-direction: row;
     gap: 5px;
     opacity: 1;
-    pointer-events: none;
     transition: 0.2s;
     margin-left: auto;
     display: flex;
@@ -464,6 +464,8 @@ input {
 /* دکمه ویرایش *//* دکمه حذف */
 .deleteBtn , .editBtn {
     background-color: #d94b6a00;
+    width: 12px;
+    height: 12px;
 }
 
 /* هاور */
@@ -982,6 +984,7 @@ body.dark .completeBtn {
     width: 190px;
     font-family: 'Estedad', 'Outfit', sans-serif;
     font-size: 10px;
+    background: #fafafa;
 }
 .task-info {
     display: grid;
@@ -1055,8 +1058,8 @@ body.dark .completeBtn {
 /* موبایل */
 @media (max-width: 768px) {
     .task-row .task-actions {
-        opacity: 0;
-        pointer-events: none;
+        opacity: 1;
+        pointer-events: auto;
     }
 }
 .task-row.dragging {
@@ -1243,6 +1246,7 @@ body.dark .completeBtn {
 }
 .task-list-wrapper {
     position: relative;
+    margin-top: 40px;
 }
 
 .task-list-wrapper::before {
@@ -1906,57 +1910,171 @@ body.dark .completeBtn {
         touch-action: manipulation;
     }
 }
-/* دکمه سه نقطه */
-.more-btn {
+/* دکمه سه نقطه */ 
+.more-btn { 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+ 
+    background: none; 
+    border: none; 
+ 
+    font-family: 'Estedad', 'Outfit', sans-serif; 
+    font-size: 50px; 
+    line-height: 1; 
+    cursor: pointer; 
+    margin-top: 15px; 
+ 
+    opacity: 1; 
+    visibility: visible; 
+} 
+ 
+.more-btn { 
+    transform: scale(1.5) !important; 
+    transform-origin: center; 
+} 
+ 
+.task-actions .more-btn { 
+    border: 0 !important; 
+    outline: 0 !important; 
+    box-shadow: none !important; 
+    background: transparent !important; 
+} 
+ 
+.task-actions .more-btn:hover, 
+.task-actions .more-btn:focus, 
+.task-actions .more-btn:active { 
+    border: 0 !important; 
+    outline: 0 !important; 
+    box-shadow: none !important; 
+} 
+ 
+/*محل قرارگیری سه نقطه و ایکون ها*/ 
+.task-actions { 
+    position: relative; 
+    width: 40px; 
+    height: 40px; 
+ 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+ 
+    margin-left: auto; 
+} 
+ 
+/*سه نقطه - همیشه سرجتی خودش */ 
+.task-actions .more-btn { 
+    position: relative; 
+    z-index: 5; 
+ 
+    width: 40px; 
+    height: 40px; 
+ 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+ 
+    margin: 0; 
+    padding: 0; 
+ 
+    background: transparent !important; 
+    border: none !important; 
+    outline: none !important; 
+    box-shadow: none !important; 
+ 
+    cursor: pointer; 
+} 
+ 
+/* =========================
+   Action Buttons
+========================= */
+
+.task-actions .editBtn,
+.task-actions .deleteBtn,
+.task-actions .pinBtn {
+    position: absolute;
+
+    width: 20px;
+    height: 20px;
+
     display: flex;
     align-items: center;
     justify-content: center;
 
-    background: none;
-    border: none;
+    margin: 0;
+    padding: 0;
 
-    font-family: 'Estedad', 'Outfit', sans-serif;
-    font-size: 50px;
-    line-height: 1;
-    cursor: pointer;
-    margin-top: 15px;
+    opacity: 0;
+    pointer-events: none;
 
-    opacity: 1;
-    visibility: visible;
+    transform: scale(0.5);
+
+    transition:
+        opacity 0.25s ease,
+        transform 0.25s ease;
 }
 
-.more-btn {
-    transform: scale(1.5) !important;
-    transform-origin: center;
+/* حذف - بالای سه نقطه */
+.task-actions .deleteBtn {
+    top: -12px;
+    left: 10px;
+
+    z-index: 10;
 }
 
-.task-actions .more-btn {
-    border: 0 !important;
-    outline: 0 !important;
-    box-shadow: none !important;
-    background: transparent !important;
-}
-
-.task-actions .more-btn:hover,
-.task-actions .more-btn:focus,
-.task-actions .more-btn:active {
-    border: 0 !important;
-    outline: 0 !important;
-    box-shadow: none !important;
-}
-
-
-/* گزینه‌های ویرایش، حذف و پین در حالت عادی مخفی باشند */
-.task-actions .editBtn,
-.task-actions .deleteBtn,
+/* پین - سمت راست */
 .task-actions .pinBtn {
-    display: none;
+    top: 0;
+    right: -18px;
+
+    z-index: 10;
 }
 
-/* وقتی سه نقطه کلیک شد، گزینه‌ها نمایش داده شوند */
+/* ویرایش - سمت چپ */
+.task-actions .editBtn {
+    top: 0;
+    left: -18px;
+
+    z-index: 10;
+}
+
+/* وقتی منو باز است */
 .task-actions.show-actions .editBtn,
 .task-actions.show-actions .deleteBtn,
 .task-actions.show-actions .pinBtn {
-    display: inline-flex;
+    opacity: 1;
+    pointer-events: auto;
+    transform: scale(1);
+}
+.task-actions .pinBtn {
+    width: 22px;
+    height: 22px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+    margin: 0;
+
+    border: 1px solid #edebeb;
+    border-radius: 50%;
+
+    background: white;
+    color: rgb(94, 92, 92);
+
+    font-size: 12px;
+    cursor: pointer;
+
+    pointer-events: none;
 }
 
+.task-actions .pinBtn.active {
+    opacity: 1;
+}
+.task-actions .editBtn {
+    font-size: 14px;
+}
+.task-actions .deleteBtn {
+    font-size: 16px;
+}
