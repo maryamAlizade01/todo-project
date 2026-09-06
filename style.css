@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Estedad:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap');
 
 /* =========================
@@ -65,15 +64,17 @@ h1 {
    Input + Button
 ========================= */
 .input-box {
-    gap: 8px;
-    direction: rtl;
     display: grid;
+    grid-template-columns: 0.8fr 1fr 0.7fr 0.7fr 1.4fr 1.4fr;
     align-items: center;
-    grid-template-columns: 80px 2fr 55px 50px 110px 110px;
+    direction: rtl;
+    gap: 8px;
     width: 100%;
-    box-sizing: border-box;
 }
 
+.category-select-wrapper {
+    display: contents;
+}
 .text {
     min-width: 380px;
     width: 100%;
@@ -90,7 +91,7 @@ h1 {
     border: 2px solid #eee;
     background: #fafafa;
     border-radius: 12px;
-    font-size: 9px;
+    font-size: 11px;
     font-family: 'Estedad', 'Outfit', sans-serif;
 }
 #deadlineDate, #deadlineTime {
@@ -261,160 +262,6 @@ ul {
     color: #9d3bb8;
 }
 
-/* =========================
-   Mobile
-========================= */
-@media (max-width: 500px) {
-    .container {
-    width: 100%;
-    max-width: 450px;
-
-    padding: 20px;
-
-    border-radius: 20px;
-    }
-
-    h1 {
-        font-size: 24px;
-    }
-
-    .input-box {
-        flex-direction: column;
-    }
-
-    button {
-        width: 100%;
-}
-.filter-box {
-    width: 100%;
-
-    display: flex;
-    justify-content: center;
-
-    gap: 6px;
-
-    flex-wrap: nowrap;
-}
-
-.filter-btn {
-    flex: 1;
-
-    padding: 7px 5px;
-
-    font-size: 11px;
-
-    white-space: nowrap;
-}
-.search-box {
-    width: 100%;
-}
-
-.search-box input {
-    width: 100%;
-
-    padding: 11px 12px;
-
-    font-size: 13px;
-}
-.task-row {
-    gap: 8px;
-
-    margin-bottom: 14px;
-}
-
-.task-row li {
-    height: auto;
-
-    min-height: 35px;
-
-    display: flex;
-    align-items: center;
-}
-
-.task-row li span {
-    width: 100%;
-
-    margin-left: 8px;
-
-    overflow-wrap: anywhere;
-}
-.task-actions {
-    right: 10px;
-    top: -10px;
-
-    gap: 6px;
-}
-
-.task-actions button {
-    width: 28px;
-    height: 28px;
-
-    font-size: 15px;
-}
-.input-box {
-    gap: 8px;
-}
-
-.input-box input {
-    width: 100%;
-    min-height: 44px;
-}
-
-.input-box #addBtn {
-    width: 100%;
-    min-height: 44px;
-}
-.title-box {
-    width: 100%;
-    height: 100px;
-    display: flex;
-    justify-content: right;
-}
-
-.help-btn {
-    width: 30px;
-    height: 30px;
-
-    font-size: 16px;
-}
-.help-modal {
-    padding: 15px;
-}
-
-.help-content {
-    width: 100%;
-    max-width: 360px;
-
-    max-height: 85vh;
-
-    overflow-y: auto;
-
-    padding: 22px 18px;
-
-    border-radius: 18px;
-}
-
-.help-content h2 {
-    font-size: 20px;
-
-    margin-bottom: 20px;
-}
-
-.help-item {
-    gap: 10px;
-
-    margin-bottom: 13px;
-}
-
-.help-item p {
-    font-size: 12px;
-
-    line-height: 1.8;
-}
-input {
-    font-size: 16px;
-}
-}
 /* =========================
    Task Actions
 ========================= */
@@ -1055,13 +902,6 @@ body.dark .completeBtn {
     pointer-events: auto;
 }
 
-/* موبایل */
-@media (max-width: 768px) {
-    .task-row .task-actions {
-        opacity: 1;
-        pointer-events: auto;
-    }
-}
 .task-row.dragging {
     opacity: 0.5;
 }
@@ -1308,608 +1148,6 @@ body.dark .completeBtn {
 
     transition: height 0.08s linear;
 }
-
-/* =========================================================
-   RESPONSIVE DESIGN
-========================================================= */
-
-/* -------------------------
-   Tablet
-------------------------- */
-
-@media (max-width: 768px) {
-
-    body {
-        padding: 14px;
-        align-items: flex-start;
-    }
-
-    .container {
-        width: 100%;
-        max-width: 600px;
-        padding: 24px 20px;
-        margin: 10px auto;
-        border-radius: 22px;
-    }
-
-    h1 {
-        font-size: 25px;
-        margin-bottom: 22px;
-    }
-
-    /* Input area */
-
-    .input-box {
-        display: grid;
-        align-items: center;
-        direction: rtl;
-        grid-template-columns: 110px 2fr 120px 120px 160px 140px;
-        width: 100%;
-        gap: 12px;
-        box-sizing: border-box;
-    }
-
-    .input-box select,
-    .input-box input[type="date"],
-    .input-box input[type="time"] {
-        width: 100%;
-        min-width: 0;
-        height: 44px;
-    }
-
-    .input-box #addBtn {
-        grid-column: 1 / -1;
-        width: 100%;
-        height: 44px;
-    }
-
-    /* Search */
-
-    .search-box {
-        width: 100%;
-    }
-
-    .search-box input {
-        width: 100%;
-        height: 44px;
-    }
-
-    /* Filters */
-
-    .filter-box,
-    .category-filter-box {
-        width: 100%;
-        flex-wrap: wrap;
-    }
-
-    .filter-btn,
-    .category-filter-btn {
-        flex: 1;
-        min-width: 70px;
-        white-space: nowrap;
-    }
-
-    /* Stats */
-
-    .stats-container {
-        gap: 8px;
-    }
-
-    .stat-item {
-        min-width: 0;
-        flex: 1;
-    }
-
-    /* Select filters */
-
-    .filter-container {
-        width: 100%;
-    }
-
-    .filter-container select,
-    #resetFilters {
-        max-width: 100%;
-    }
-
-    /* Tasks */
-
-    .task-row {
-        width: 100%;
-        gap: 8px;
-    }
-
-    .task-info {
-        min-width: 0;
-    }
-
-    .task-info > span {
-        overflow-wrap: anywhere;
-        word-break: break-word;
-    }
-
-    .completeBtn {
-        width: 34px;
-        height: 34px;
-    }
-
-    /* Task actions */
-
-    .task-actions {
-        right: 8px;
-        top: -9px;
-    }
-
-    .task-actions button {
-        width: 27px;
-        height: 27px;
-        font-size: 15px;
-    }
-
-    /* Timeline */
-
-    .task-list-wrapper {
-        width: 100%;
-    }
-
-    .task-list-wrapper::before,
-    .task-list-wrapper::after {
-        left: -10px;
-    }
-
-    /* Show More */
-
-    .show-more-container {
-        padding-left: 18px;
-    }
-
-    #showMoreBtn {
-        font-size: 12px;
-    }
-
-    /* Help */
-
-    .help-content {
-        width: calc(100vw - 30px);
-        max-width: 420px;
-        max-height: 85vh;
-        overflow-y: auto;
-        padding: 22px 18px;
-    }
-
-    /* Toast */
-
-    .toast {
-        width: max-content;
-        max-width: calc(100vw - 30px);
-        bottom: 18px;
-    }
-}
-
-
-/* -------------------------
-   Mobile
-------------------------- */
-
-@media (max-width: 500px) {
-
-    body {
-        padding: 10px;
-    }
-
-    .container {
-        width: 100%;
-        max-width: none;
-        padding: 20px 15px;
-        margin: 5px auto;
-        border-radius: 20px;
-    }
-
-    /* Title */
-
-    .title-box {
-        height: 100px;
-    }
-
-    .title-box h1 {
-        font-size: 22px;
-        margin-bottom: 20px;
-    }
-
-    .help-btn,
-    .theme-btn {
-        width: 30px;
-        height: 30px;
-        font-size: 16px;
-    }
-
-    .theme-btn {
-        right: 38px;
-    }
-
-    /* Input */
-
-    .input-box {
-        display: flex;
-        flex-direction: column;
-        grid-template-columns: 1fr 1fr;
-        gap: 8px;
-    }
-
-    .input-box input,
-    .input-box select {
-        width: 100%;
-        min-width: 0;
-        height: 44px;
-        font-size: 15px;
-    }
-
-    .input-box #addBtn {
-        width: 100%;
-        height: 44px;
-        margin-top: 2px;
-    }
-
-    /* Search */
-
-    .search-box {
-        margin-top: 13px;
-    }
-
-    .search-box input {
-        height: 44px;
-        padding: 10px 12px;
-        font-size: 15px;
-    }
-
-    /* Main filters */
-
-    .filter-box {
-        gap: 5px;
-        margin-top: 15px;
-        flex-wrap: nowrap;
-    }
-
-    .filter-btn {
-        min-width: 0;
-        flex: 1;
-        padding: 8px 4px;
-        font-size: 10px;
-    }
-
-    /* Category filters */
-
-    .category-filter-box {
-        gap: 5px;
-        margin-top: 8px;
-        flex-wrap: wrap;
-    }
-
-    .category-filter-btn {
-        flex: 1;
-        min-width: 60px;
-        padding: 7px 8px;
-        font-size: 10px;
-    }
-
-    /* Counter */
-
-    .task-counter {
-        font-size: 12px;
-        margin-top: 12px;
-    }
-
-    /* Progress */
-
-    .progress-container {
-        margin-bottom: 12px;
-    }
-
-    .progress-info {
-        font-size: 9px;
-    }
-
-    .progress-bar {
-        height: 6px;
-    }
-
-    /* Stats */
-
-    .stats-container {
-        margin-bottom: 12px;
-        padding: 8px 0;
-        gap: 4px;
-    }
-
-    .stat-number {
-        font-size: 15px;
-    }
-
-    .stat-label {
-        font-size: 8px;
-    }
-
-    /* Select filters */
-
-    .filter-container {
-        display: flex;
-        flex-direction: column;
-        gap: 7px;
-    }
-
-    .filter-container select,
-    #resetFilters {
-        width: 100%;
-        min-height: 40px;
-        font-size: 12px;
-    }
-
-    #resetFilters {
-        padding: 9px 10px;
-    }
-
-    /* Task list */
-
-    ul {
-        margin-top: 20px;
-    }
-
-    .task-row {
-        gap: 7px;
-        margin-bottom: 13px;
-        width: 100%;
-    }
-
-    .completeBtn {
-        width: 32px;
-        height: 32px;
-        flex-shrink: 0;
-    }
-
-    /* Task information */
-
-    .task-info {
-        width: 100%;
-        min-width: 0;
-        column-gap: 4px;
-    }
-
-    .task-info > span {
-        overflow-wrap: anywhere;
-        word-break: break-word;
-        line-height: 1.5;
-    }
-
-    .task-date {
-        font-size: 9px;
-    }
-
-    .task-category,
-    .task-priority {
-        font-size: 8px;
-        padding: 2px 6px;
-        white-space: nowrap;
-    }
-
-    .task-deadline {
-        font-size: 8px;
-        overflow-wrap: anywhere;
-    }
-
-    /* Completed task */
-
-    .task-row.completed .task-info {
-        padding: 4px 9px;
-        border-radius: 18px;
-    }
-
-    /* Task actions */
-
-    .task-actions {
-        right: 5px;
-        top: -9px;
-        gap: 4px;
-    }
-
-    .task-actions button {
-        width: 25px;
-        height: 25px;
-        font-size: 14px;
-    }
-
-    /* Swipe delete */
-
-    .swipe-delete {
-        width: 36px;
-        height: 36px;
-        font-size: 16px;
-    }
-
-    /* Timeline */
-
-    .task-list-wrapper {
-        width: 100%;
-    }
-
-    .task-list-wrapper::before {
-        left: -9px;
-        width: 2px;
-    }
-
-    .task-list-wrapper::after {
-        left: -9px;
-        width: 3px;
-    }
-
-    /* Show More */
-
-    .show-more-container {
-        padding-left: 14px;
-        margin-top: 2px;
-    }
-
-    #showMoreBtn {
-        font-size: 11px;
-        padding: 5px 0;
-    }
-
-    /* Reminder */
-
-    .reminder-box {
-        font-size: 9px;
-        padding: 8px 10px;
-    }
-
-    /* Help modal */
-
-    .help-modal {
-        padding: 12px;
-    }
-
-    .help-content {
-        width: 100%;
-        max-width: none;
-        max-height: 88vh;
-        padding: 22px 16px;
-        border-radius: 18px;
-    }
-
-    .help-content h2 {
-        font-size: 19px;
-        margin-bottom: 20px;
-    }
-
-    .help-item {
-        gap: 9px;
-        margin-bottom: 12px;
-    }
-
-    .help-item span {
-        width: 32px;
-        height: 32px;
-        font-size: 16px;
-    }
-
-    .help-item p {
-        font-size: 11px;
-        line-height: 1.8;
-    }
-
-    /* Toast */
-
-    .toast {
-        bottom: 15px;
-        padding: 10px 14px;
-        font-size: 12px;
-        max-width: calc(100vw - 24px);
-    }
-
-    .undo-btn {
-        font-size: 11px;
-        margin-right: 6px;
-    }
-}
-
-
-/* -------------------------
-   Small Mobile
-------------------------- */
-
-@media (max-width: 360px) {
-
-    body {
-        padding: 7px;
-    }
-
-    .container {
-        padding: 17px 12px;
-        border-radius: 18px;
-    }
-
-
-    .help-btn,
-    .theme-btn {
-        width: 28px;
-        height: 28px;
-        font-size: 15px;
-    }
-
-    .theme-btn {
-        right: 35px;
-    }
-
-    .filter-btn {
-        font-size: 9px;
-        padding: 7px 2px;
-    }
-
-    .category-filter-btn {
-        font-size: 9px;
-        padding: 6px 5px;
-    }
-
-    .task-row {
-        gap: 5px;
-    }
-
-    .completeBtn {
-        width: 30px;
-        height: 30px;
-    }
-
-    .task-date {
-        font-size: 8px;
-    }
-
-    .task-category,
-    .task-priority {
-        font-size: 7px;
-        padding: 2px 5px;
-    }
-
-    .task-deadline {
-        font-size: 7px;
-    }
-
-    .stat-number {
-        font-size: 14px;
-    }
-
-    .stat-label {
-        font-size: 7px;
-    }
-
-    .task-list-wrapper::before,
-    .task-list-wrapper::after {
-        left: -8px;
-    }
-}
-
-
-/* -------------------------
-   Touch devices
-------------------------- */
-
-@media (hover: none) and (pointer: coarse) {
-
-    button {
-        -webkit-tap-highlight-color: transparent;
-    }
-
-    button:hover {
-        transform: none;
-        box-shadow: none;
-    }
-
-    .task-actions button:hover {
-        transform: none;
-    }
-
-    input,
-    select,
-    button {
-        touch-action: manipulation;
-    }
-}
 /* دکمه سه نقطه */ 
 .more-btn { 
     display: flex; 
@@ -1948,21 +1186,7 @@ body.dark .completeBtn {
     outline: 0 !important; 
     box-shadow: none !important; 
 } 
- 
-/*محل قرارگیری سه نقطه و ایکون ها*/ 
-.task-actions { 
-    position: relative; 
-    width: 40px; 
-    height: 40px; 
- 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
- 
-    margin-left: auto; 
-} 
- 
-/*سه نقطه - همیشه سرجتی خودش */ 
+ /*سه نقطه - همیشه سرجتی خودش */ 
 .task-actions .more-btn { 
     position: relative; 
     z-index: 5; 
@@ -2077,4 +1301,420 @@ body.dark .completeBtn {
 }
 .task-actions .deleteBtn {
     font-size: 16px;
+}
+/* =========================================
+   RESPONSIVE DESIGN
+========================================= */
+
+/* ---------- Tablet ---------- */
+@media (max-width: 900px) {
+
+    body {
+        padding: 15px;
+    }
+
+    .container {
+        max-width: 100%;
+        padding: 25px;
+    }
+
+    .input-box {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .text {
+        min-width: 0;
+    }
+
+    .filter-container {
+        gap: 6px;
+    }
+
+    #statusFilter,
+    #categoryFilter,
+    #priorityFilter,
+    #sortInput {
+        width: 160px;
+    }
+
+}
+
+
+/* =========================================
+   Mobile
+========================================= */
+
+@media (max-width: 600px) {
+
+    body {
+        padding: 10px;
+        align-items: flex-start;
+    }
+
+    .container {
+        width: 100%;
+        padding: 18px 14px;
+        border-radius: 18px;
+    }
+
+
+    /* ---------- Title ---------- */
+
+    .title-box {
+        height: 70px;
+    }
+
+    .title-box h1 {
+        font-size: 22px;
+        margin-bottom: 15px;
+    }
+
+    .help-btn {
+        left: 0;
+        top: 0;
+        width: 30px;
+        height: 30px;
+    }
+
+    .theme-btn {
+        left: 38px;
+        top: 0;
+        width: 30px;
+        height: 30px;
+    }
+    #addBtn {
+        grid-column: 2;
+        width: 100%;
+    }
+
+    /* ---------- Add Task ---------- */
+
+    .input-box {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .text {
+        min-width: 0;
+        width: 100%;
+        grid-column: 1 / -1;
+    }
+
+    #addBtn {
+        width: 100%;
+    }
+
+    #categoryInput,
+    #priorityInput {
+        width: 100%;
+        height: 45px;
+        font-size: 12px;
+    }
+
+    #deadlineDate,
+    #deadlineTime {
+        width: 100%;
+        min-width: 0;
+        font-size: 11px;
+    }
+
+
+    /* ---------- Search ---------- */
+
+    .search-box {
+        margin-top: 12px;
+    }
+
+    .search-box input {
+        font-size: 13px;
+    }
+
+
+    /* ---------- Filters ---------- */
+
+    .filter-box {
+        gap: 6px;
+        flex-wrap: wrap;
+    }
+
+    .filter-btn {
+        flex: 1;
+        min-width: 0;
+        width: auto;
+        height: 34px;
+        padding: 6px 8px;
+        font-size: 11px;
+    }
+
+    .category-filter-box {
+        gap: 6px;
+    }
+
+    .category-filter-btn {
+        width: auto;
+        min-width: 45px;
+        padding: 6px 10px;
+        font-size: 10px;
+    }
+
+
+    /* ---------- Select Filters ---------- */
+
+    .filter-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 7px;
+    }
+
+    #statusFilter,
+    #categoryFilter,
+    #priorityFilter,
+    #sortInput {
+        width: 100%;
+        min-width: 0;
+        height: 38px;
+        font-size: 10px;
+    }
+
+
+    /* ---------- Stats ---------- */
+
+    .stats-container {
+        gap: 15px;
+        padding: 8px 0;
+    }
+
+    .stat-item {
+        min-width: 0;
+        flex: 1;
+    }
+
+    .stat-number {
+        font-size: 15px;
+    }
+
+    .stat-label {
+        font-size: 8px;
+    }
+
+
+    /* ---------- Progress ---------- */
+
+    .progress-container {
+        margin-bottom: 12px;
+    }
+
+
+    /* ---------- Task List ---------- */
+
+    .task-list-wrapper {
+        margin-top: 25px;
+    }
+
+    .task-list-wrapper::before,
+    .task-list-wrapper::after {
+        left: -7px;
+    }
+
+    ul {
+        margin-top: 18px;
+    }
+
+
+    /* ---------- Task ---------- */
+
+    .task-row {
+        gap: 7px;
+        margin-bottom: 10px;
+    }
+
+    .task-row li {
+        min-width: 0;
+    }
+
+    .task-row li span {
+        margin-left: 6px;
+    }
+
+    .task-info {
+        column-gap: 4px;
+    }
+
+    .completeBtn {
+        width: 32px;
+        height: 32px;
+    }
+
+
+    /* ---------- Task Date / Category / Priority ---------- */
+
+    .task-date {
+        font-size: 9px;
+    }
+
+    .task-category,
+    .task-priority {
+        font-size: 8px;
+        padding: 2px 6px;
+    }
+
+    .task-deadline {
+        font-size: 8px;
+    }
+
+
+    /* ---------- Three Dots ---------- */
+
+    .task-actions .more-btn {
+        width: 34px;
+        height: 34px;
+    }
+
+    .task-actions .editBtn,
+    .task-actions .deleteBtn,
+    .task-actions .pinBtn {
+        width: 20px;
+        height: 20px;
+    }
+
+
+    /* ---------- Show More ---------- */
+
+    .show-more-container {
+        padding-left: 12px;
+    }
+
+    #showMoreBtn {
+        font-size: 12px;
+    }
+
+
+    /* ---------- Toast ---------- */
+
+    .toast {
+        width: calc(100% - 30px);
+        max-width: 350px;
+        bottom: 15px;
+        padding: 10px 14px;
+        font-size: 12px;
+        text-align: center;
+    }
+
+
+    /* ---------- Help Modal ---------- */
+
+    .help-modal {
+        padding: 12px;
+    }
+
+    .help-content {
+        max-width: 100%;
+        padding: 20px 16px;
+        border-radius: 18px;
+    }
+
+    .help-content h2 {
+        font-size: 19px;
+        margin-bottom: 20px;
+    }
+
+    .help-item {
+        gap: 8px;
+        margin-bottom: 12px;
+    }
+
+    .help-item span {
+        width: 30px;
+        height: 30px;
+        font-size: 15px;
+    }
+
+    .help-item p {
+        font-size: 11px;
+        line-height: 1.7;
+    }
+
+}
+
+
+/* =========================================
+   Small Phones
+========================================= */
+
+@media (max-width: 400px) {
+
+    body {
+        padding: 6px;
+    }
+
+    .container {
+        padding: 15px 10px;
+        border-radius: 16px;
+    }
+
+    .title-box h1 {
+        font-size: 20px;
+    }
+
+    .input-box {
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
+    }
+
+    #categoryInput,
+    #priorityInput {
+        height: 42px;
+        font-size: 10px;
+    }
+
+    #deadlineDate,
+    #deadlineTime {
+        font-size: 10px;
+    }
+
+    .filter-btn {
+        font-size: 10px;
+        padding: 5px;
+    }
+
+    .task-row {
+        gap: 5px;
+    }
+
+    .task-info {
+        column-gap: 3px;
+    }
+
+}
+/* Filter selects - Dark Mode */
+body.dark #statusFilter,
+body.dark #categoryFilter,
+body.dark #priorityFilter,
+body.dark #priorityInput,
+body.dark #categoryInput,
+body.dark #statusFilter,
+body.dark #category-filter-boxx,
+body.dark #sortInput {
+    background-color: #211a24;
+    color: #f4e8f6;
+    border-color: #49384f;
+}
+
+/* گزینه‌های داخل فیلتر */
+body.dark #statusFilter option,
+body.dark #categoryFilter option,
+body.dark #priorityFilter option,
+body.dark #sortInput option {
+    background-color: #211a24;
+    color: #f4e8f6;
+}
+/* Category filter buttons - Dark Mode */
+body.dark .category-filter-btn {
+    background: #49304f;
+    color: #ead8ef;
+}
+
+body.dark .category-filter-btn.active {
+    background: #891ba8;
+    color: white;
 }

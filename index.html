@@ -17,12 +17,17 @@
 
             <button id="addBtn">افزودن</button>
             <input class="text" id="taskInput" placeholder="کار جدید را وارد کنید ...">
-               <select id="categoryInput">
-                   <option value="personal">شخصی</option>
-                   <option value="study">درس</option>
-                   <option value="work">کار</option>
-               </select>
+               <div class="category-select-wrapper">
 
+                <div class="category-wrapper">
+
+    <select id="categoryInput">
+        <option value="personal">شخصی</option>
+        <option value="study">درس</option>
+        <option value="work">کار</option>
+    </select>
+
+</div>
                <select id="priorityInput">
                    <option value="low">کم</option>
                    <option value="medium" selected>متوسط</option>
@@ -32,7 +37,7 @@
                <input type="date" id="deadlineDate">
 
                <input type="time" id="deadlineTime" step="60">
-
+               </div>
         </div>
         <div class="task-counter">
             <span id="taskCount">0</span>
@@ -145,8 +150,6 @@
 </div>
 
         <div id="reminderBox" class="reminder-box"></div>
-
-            <ul id="taskList"></ul>
         <div id="helpModal" class="help-modal">
 
             <div class="help-content">
@@ -179,6 +182,8 @@
 
         </div>
     </div>
+
+</div>
     <div id="toast" class="toast"></div>
     <script src="script.js"></script>
 </body>

@@ -1,6 +1,6 @@
-
 const taskInput = document.getElementById("taskInput");
 const categoryInput = document.getElementById("categoryInput");
+const newCategoryBox = document.getElementById("newCategoryBox");
 const priorityInput = document.getElementById("priorityInput");
 const deadlineDate = document.getElementById("deadlineDate");
 const deadlineTime = document.getElementById("deadlineTime");
@@ -11,11 +11,11 @@ const resetFilters = document.getElementById("resetFilters");
 const sortInput = document.getElementById("sortInput");
 const addBtn = document.getElementById("addBtn");
 const taskList = document.getElementById("taskList");
-
 const taskCount = document.getElementById("taskCount");
 const searchInput = document.getElementById("searchInput");
 const filterButtons = document.querySelectorAll(".filter-btn");
 const categoryFilterButtons = document.querySelectorAll(".category-filter-btn");
+const categoryFilterBox = document.querySelector(".category-filter-box");
 
 const toast = document.getElementById("toast");
 
@@ -60,43 +60,40 @@ function showToast(message, showUndo = false) {
         undoBtn.textContent = "بازگردانی";
         undoBtn.classList.add("undo-btn");
 
-        undoBtn.onclick = function () {
+undoBtn.onclick = function () {
 
-            if (!deletedTask) {
-                return;
-            }
+    if (!deletedTask) {
+        return;
+    }
 
-            // برگرداندن Task به آرایه
-            tasks.splice(deletedTaskIndex, 0, deletedTask);
+    // برگرداندن تسک به جای قبلی
+    tasks.splice(deletedTaskIndex, 0, deletedTask);
 
-            // ذخیره
-            localStorage.setItem("tasks", JSON.stringify(tasks));
+    // ذخیره در localStorage
+    localStorage.setItem("tasks", JSON.stringify(tasks));
 
-            insertingTaskIndex = deletedTaskIndex;
+    // دوباره ساختن لیست
+    renderVisibleTasks();
 
-            taskList.innerHTML = "";
+    // اعمال فیلترها و جستجو
+    searchTasks();
 
-            tasks.forEach(function (task) {
-            createTask(task);
-         });
+    // آپدیت اطلاعات
+    updateTaskCount();
+    updateProgress();
+    updateReminder();
+    updateStats();
+    updateShowMoreButton();
 
-            insertingTaskIndex = null; 
-        
+    // بستن Toast
+    toast.classList.remove("show");
 
-            updateTaskCount();
+    // پاک کردن اطلاعات Undo
+    deletedTask = null;
+    deletedTaskIndex = null;
 
-            filterTasks(currentFilter);
-            
-            // بستن Toast
-            toast.classList.remove("show");
-
-            // پاک کردن اطلاعات
-            deletedTask = null;
-            deletedTaskIndex = null;
-
-            clearTimeout(undoTimer);
-    
-        };
+    clearTimeout(undoTimer);
+};
 
         toast.appendChild(undoBtn);
     }
@@ -243,20 +240,37 @@ filterButtons.forEach(function (button) {
     });
 
 });
-categoryFilterButtons.forEach(function (button) {
+categoryFilterBox.addEventListener("click", function (event) {
 
-    button.addEventListener("click", function () {
+    const button =
+        event.target.closest(
+            ".category-filter-btn"
+        );
 
-        categoryFilterButtons.forEach(function (btn) {
+    if (!button) {
+        return;
+    }
+
+
+    categoryFilterBox
+        .querySelectorAll(
+            ".category-filter-btn"
+        )
+        .forEach(function (btn) {
+
             btn.classList.remove("active");
+
         });
 
-        button.classList.add("active");
 
-        currentCategory = button.dataset.category;
+    button.classList.add("active");
 
-        searchTasks();
-    });
+
+    currentCategory =
+        button.dataset.category;
+
+
+    searchTasks();
 
 });
 function createTask(task) {
@@ -304,15 +318,39 @@ taskRow.addEventListener("dragend", function () {
     const taskCategory = document.createElement("small");
 
 if (task.category === "personal") {
+
     taskCategory.textContent = "شخصی";
+
 }
 
-if (task.category === "study") {
+else if (task.category === "study") {
+
     taskCategory.textContent = "درس";
+
 }
 
-if (task.category === "work") {
+else if (task.category === "work") {
+
     taskCategory.textContent = "کار";
+
+}
+
+else {
+
+    const customCategory =
+        customCategories.find(function (category) {
+
+            return category.value === task.category;
+
+        });
+
+    if (customCategory) {
+
+        taskCategory.textContent =
+            customCategory.name;
+
+    }
+
 }
 
 taskCategory.classList.add("task-category", task.category);
@@ -706,7 +744,7 @@ moreBtn.addEventListener("click", function (event) {
     taskRow.appendChild(li);
     taskRow.appendChild(taskActions);
     let startX = 0;
-let currentX = 0;
+    let currentX = 0;
 
 taskRow.addEventListener("touchstart", function (event) {
 
