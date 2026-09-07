@@ -2,6 +2,64 @@ const taskInput = document.getElementById("taskInput");
 const categoryInput = document.getElementById("categoryInput");
 const newCategoryBox = document.getElementById("newCategoryBox");
 const priorityInput = document.getElementById("priorityInput");
+const categorySelectWrapper = document.querySelector(".category-select-wrapper");
+const mobileCategoryBtn = document.getElementById("mobileCategoryBtn");
+const mobilePriorityBtn = document.getElementById("mobilePriorityBtn");
+
+const categoryWrapper = document.querySelector(".category-wrapper");
+
+mobileCategoryBtn.addEventListener("click", function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const wrapper = document.querySelector(".category-wrapper");
+    const select = document.getElementById("categoryInput");
+
+    const rect = mobileCategoryBtn.getBoundingClientRect();
+
+    wrapper.style.position = "fixed";
+    wrapper.style.left = `${rect.left - 45}px`;
+    wrapper.style.top = `${rect.bottom - 25}px`;
+    wrapper.style.width = "90px";
+    wrapper.style.height = "1px";
+    wrapper.style.zIndex = "9999";
+    wrapper.style.display = "block";
+
+    select.style.display = "block";
+    select.style.width = "1px";
+    select.style.height = "1px";
+    select.style.opacity = "0.01";
+
+    if (select.showPicker) {
+        select.showPicker();
+    } else {
+        select.focus();
+    }
+});
+
+mobilePriorityBtn.addEventListener("click", function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const select = document.getElementById("priorityInput");
+
+    const rect = mobilePriorityBtn.getBoundingClientRect();
+
+    select.style.position = "fixed";
+    select.style.left = `${rect.left}px`;
+    select.style.top = `${rect.bottom - 23}px`;
+    select.style.width = "1px";
+    select.style.height = "1px";
+    select.style.zIndex = "9999";
+    select.style.display = "block";
+    select.style.opacity = "0.01";
+
+    if (select.showPicker) {
+        select.showPicker();
+    } else {
+        select.focus();
+    }
+});
 const deadlineDate = document.getElementById("deadlineDate");
 const deadlineTime = document.getElementById("deadlineTime");
 const statusFilter = document.getElementById("statusFilter");

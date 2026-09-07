@@ -1383,8 +1383,9 @@ body.dark .completeBtn {
         height: 30px;
     }
     #addBtn {
-        grid-column: 2;
+        grid-row: 2;
         width: 100%;
+        box-sizing: border-box;
     }
 
     /* ---------- Add Task ---------- */
@@ -1633,7 +1634,134 @@ body.dark .completeBtn {
         font-size: 11px;
         line-height: 1.7;
     }
+    .task-input-wrapper {
+    position: relative;
+    width: 100%;
+}
 
+.mobile-options {
+    display: flex;
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    align-items: center;
+    gap: 2px;
+    z-index: 2;
+}
+
+.mobile-options button {
+    width: 24px;
+    height: 24px;
+    border: none;
+    background: transparent;
+    color: #542b55;
+    font-size: 17px;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+#categoryInput,
+#priorityInput {
+    background-color: #f8f3f8;
+    color: #542b55;
+}
+
+#categoryInput option,
+#priorityInput option {
+    background-color: #f8f3f8;
+    color: #542b55;
+}
+
+#categoryInput option:checked,
+#priorityInput option:checked {
+    background-color: #542b54;
+    color: white;
+}
+.input-box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.task-input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.task-input-wrapper .text {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    padding-left: 75px;
+}
+
+#addBtn {
+    width: 100%;
+    box-sizing: border-box;
+}
+/* ---------- Mobile Task Input ---------- */
+
+.task-input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+#taskInput {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    padding-left: 75px;
+}
+
+.mobile-options {
+    display: flex;
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    gap: 5px;
+    z-index: 10;
+}
+
+.mobile-options button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 26px;
+    height: 26px;
+
+    padding: 0;
+    margin: 0;
+
+    border: none;
+    outline: none;
+    box-shadow: none;
+
+    background: transparent;
+    color: #8a558e;
+
+    font-size: 15px;
+    line-height: 1;
+
+    transform: none;
+}
+
+.mobile-options button:hover,
+.mobile-options button:focus,
+.mobile-options button:active {
+    transform: none;
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+.category-wrapper,
+#priorityInput {
+    display: none;
+}
 }
 
 
@@ -1718,3 +1846,4 @@ body.dark .category-filter-btn.active {
     background: #891ba8;
     color: white;
 }
+

@@ -1,190 +1,499 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>to do list</title>
+
+    <title>To Do List</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
+
     <div class="container">
+
+        <!-- ==================== HEADER ==================== -->
         <div class="title-box">
-            
-            <button id="helpBtn" class="help-btn">ⓘ</button>
-            <button id="themeBtn" class="theme-btn">☾</button>
-        </div>
-        <div class="input-box">
 
-            <button id="addBtn">افزودن</button>
-            <input class="text" id="taskInput" placeholder="کار جدید را وارد کنید ...">
-               <div class="category-select-wrapper">
+            <button id="helpBtn" class="help-btn">
+                ⓘ
+            </button>
 
-                <div class="category-wrapper">
-
-    <select id="categoryInput">
-        <option value="personal">شخصی</option>
-        <option value="study">درس</option>
-        <option value="work">کار</option>
-    </select>
-
-</div>
-               <select id="priorityInput">
-                   <option value="low">کم</option>
-                   <option value="medium" selected>متوسط</option>
-                   <option value="high">زیاد</option>
-               </select>
-
-               <input type="date" id="deadlineDate">
-
-               <input type="time" id="deadlineTime" step="60">
-               </div>
-        </div>
-        <div class="task-counter">
-            <span id="taskCount">0</span>
-               کار انجام شده
-        </div>
-        <div class="search-box">
-           <input
-              type="text"
-              id="searchInput"
-              placeholder="جستجوی کار..."
-              >
-        </div>
-        <div class="filter-box">
-            <button class="filter-btn active" data-filter="all">همه</button>
-            <button class="filter-btn" data-filter="active">انجام نشده</button>
-            <button class="filter-btn" data-filter="completed">انجام شده</button>
-        </div>
-        <div class="category-filter-box">
-
-            <button class="category-filter-btn active" data-category="all">
-             همه
-           </button>
-
-           <button class="category-filter-btn" data-category="personal">
-            شخصی
-           </button>
-
-           <button class="category-filter-btn" data-category="study">
-            درس
-           </button>
-
-           <button class="category-filter-btn" data-category="work">
-           کار
-          </button>
-
-        </div>
-        <div class="progress-container">
-
-            <div class="progress-info">
-               <span id="progressText">0 از 0 کار انجام شده</span>
-               <span id="progressPercent">0%</span>
-            </div>
-
-            <div class="progress-bar">
-              <div id="progressFill"></div>
-            </div>
+            <button id="themeBtn" class="theme-btn">
+                ☾
+            </button>
 
         </div>
 
-        <div class="stats-container">
 
-     <div class="stat-item">
-           <span class="stat-number" id="totalStat">0</span>
-           <span class="stat-label">کل</span>
-       </div>
+<!-- ==================== ADD TASK ==================== -->
+<div class="input-box">
 
-       <div class="stat-item">
-          <span class="stat-number" id="completedStat">0</span>
-          <span class="stat-label">انجام شده</span>
-       </div>
+    <div class="task-input-wrapper">
 
-       <div class="stat-item">
-          <span class="stat-number" id="remainingStat">0</span>
-          <span class="stat-label">باقی مانده</span>
-       </div>
+        <input
+            class="text"
+            id="taskInput"
+            placeholder="کار جدید را وارد کنید ..."
+        >
 
-     </div>
+        <div class="mobile-options">
 
-     <div class="filter-container">
+            <button type="button" id="mobileCategoryBtn">⌄</button>
+            <button type="button" id="mobilePriorityBtn">⌄</button>
 
-    <select id="statusFilter">
-        <option value="all">همه وضعیت‌ها</option>
-        <option value="active">انجام نشده</option>
-        <option value="completed">انجام شده</option>
-    </select>
+        </div>
 
-    <select id="categoryFilter">
-        <option value="all">همه دسته‌ها</option>
-        <option value="personal">شخصی</option>
-        <option value="study">درس</option>
-        <option value="work">کار</option>
-    </select>
+    </div>
 
-    <select id="priorityFilter">
-        <option value="all">همه اولویت‌ها</option>
-        <option value="high">زیاد</option>
-        <option value="medium">متوسط</option>
-        <option value="low">کم</option>
-    </select>
 
-    <select id="sortInput">
-        <option value="newest">جدیدترین</option>
-        <option value="oldest">قدیمی‌ترین</option>
-        <option value="priority">اولویت</option>
-        <option value="deadline">نزدیک‌ترین Deadline</option>
-    </select>
-
-    <button id="resetFilters" type="button">
-    ↻
+    <button id="addBtn" type="button">
+        افزودن
     </button>
-</div>
 
-<div class="task-list-wrapper">
-    <ul id="taskList"></ul>
-</div>
-<div class="show-more-container">
-    <button id="showMoreBtn" type="button" style="display: none;">
-    نمایش بیشتر ↓
-</button>
-</div>
 
-        <div id="reminderBox" class="reminder-box"></div>
-        <div id="helpModal" class="help-modal">
+    <div class="mobile-selects">
 
-            <div class="help-content">
+        <div class="category-wrapper">
 
-               <button id="closeHelp" class="close-help">×</button>
-
-                    <h2>راهنمای استفاده</h2>
-                    
-            <div class="help-item">
-                <span>👆</span>
-                <p>برای نمایش گزینه‌های ویرایش و حذف، روی تسک چند لحظه نگه دارید.</p>
-            </div>
-
-            <div class="help-item">
-                <span>✓</span>
-                <p>برای انجام‌شدن یا لغو انجام تسک، روی دکمه تیک بزنید.</p>
-            </div>
-
-            <div class="help-item">
-               <span>✎</span>
-               <p>برای ویرایش متن تسک از آیکون مداد استفاده کنید.</p>
-            </div>
-
-            <div class="help-item">
-               <span>×</span>
-               <p>برای حذف تسک از آیکون ضربدر استفاده کنید.</p>
-            </div>
-
-          </div>
+            <select id="categoryInput">
+                <option value="personal">شخصی</option>
+                <option value="study">درس</option>
+                <option value="work">کار</option>
+            </select>
 
         </div>
+
+
+        <select id="priorityInput">
+            <option value="low">کم</option>
+            <option value="medium" selected>متوسط</option>
+            <option value="high">زیاد</option>
+        </select>
+
+
+        <input
+            type="date"
+            id="deadlineDate"
+        >
+
+
+        <input
+            type="time"
+            id="deadlineTime"
+            step="60"
+        >
+
     </div>
 
 </div>
-    <div id="toast" class="toast"></div>
+        <!-- ==================== MAIN CONTENT ==================== -->
+        <div class="main-content">
+
+
+            <!-- ==================== TASK COUNTER ==================== -->
+            <div class="task-counter">
+
+                <span id="taskCount">
+                    0
+                </span>
+
+                کار انجام شده
+
+            </div>
+
+
+
+            <!-- ==================== SEARCH ==================== -->
+            <div class="search-box">
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="جستجوی کار..."
+                >
+
+            </div>
+
+
+
+            <!-- ==================== QUICK FILTERS ==================== -->
+            <div class="filter-box">
+
+                <button
+                    class="filter-btn active"
+                    data-filter="all"
+                    type="button"
+                >
+                    همه
+                </button>
+
+                <button
+                    class="filter-btn"
+                    data-filter="active"
+                    type="button"
+                >
+                    انجام نشده
+                </button>
+
+                <button
+                    class="filter-btn"
+                    data-filter="completed"
+                    type="button"
+                >
+                    انجام شده
+                </button>
+
+            </div>
+
+
+
+            <!-- ==================== CATEGORY FILTER ==================== -->
+            <div class="category-filter-box">
+
+                <button
+                    class="category-filter-btn active"
+                    data-category="all"
+                    type="button"
+                >
+                    همه
+                </button>
+
+                <button
+                    class="category-filter-btn"
+                    data-category="personal"
+                    type="button"
+                >
+                    شخصی
+                </button>
+
+                <button
+                    class="category-filter-btn"
+                    data-category="study"
+                    type="button"
+                >
+                    درس
+                </button>
+
+                <button
+                    class="category-filter-btn"
+                    data-category="work"
+                    type="button"
+                >
+                    کار
+                </button>
+
+            </div>
+
+
+
+            <!-- ==================== PROGRESS ==================== -->
+            <div class="progress-container">
+
+                <div class="progress-info">
+
+                    <span id="progressText">
+                        0 از 0 کار انجام شده
+                    </span>
+
+                    <span id="progressPercent">
+                        0%
+                    </span>
+
+                </div>
+
+
+                <div class="progress-bar">
+
+                    <div id="progressFill"></div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ==================== STATS ==================== -->
+            <div class="stats-container">
+
+
+                <div class="stat-item">
+
+                    <span
+                        class="stat-number"
+                        id="totalStat"
+                    >
+                        0
+                    </span>
+
+                    <span class="stat-label">
+                        کل
+                    </span>
+
+                </div>
+
+
+                <div class="stat-item">
+
+                    <span
+                        class="stat-number"
+                        id="completedStat"
+                    >
+                        0
+                    </span>
+
+                    <span class="stat-label">
+                        انجام شده
+                    </span>
+
+                </div>
+
+
+                <div class="stat-item">
+
+                    <span
+                        class="stat-number"
+                        id="remainingStat"
+                    >
+                        0
+                    </span>
+
+                    <span class="stat-label">
+                        باقی مانده
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ==================== FILTERS ==================== -->
+            <div class="filter-container">
+
+
+                <!-- Status -->
+                <select id="statusFilter">
+
+                    <option value="all">
+                        همه وضعیت‌ها
+                    </option>
+
+                    <option value="active">
+                        انجام نشده
+                    </option>
+
+                    <option value="completed">
+                        انجام شده
+                    </option>
+
+                </select>
+
+
+                <!-- Category -->
+                <select id="categoryFilter">
+
+                    <option value="all">
+                        همه دسته‌ها
+                    </option>
+
+                    <option value="personal">
+                        شخصی
+                    </option>
+
+                    <option value="study">
+                        درس
+                    </option>
+
+                    <option value="work">
+                        کار
+                    </option>
+
+                </select>
+
+
+                <!-- Priority -->
+                <select id="priorityFilter">
+
+                    <option value="all">
+                        همه اولویت‌ها
+                    </option>
+
+                    <option value="high">
+                        زیاد
+                    </option>
+
+                    <option value="medium">
+                        متوسط
+                    </option>
+
+                    <option value="low">
+                        کم
+                    </option>
+
+                </select>
+
+
+                <!-- Sort -->
+                <select id="sortInput">
+
+                    <option value="newest">
+                        جدیدترین
+                    </option>
+
+                    <option value="oldest">
+                        قدیمی‌ترین
+                    </option>
+
+                    <option value="priority">
+                        اولویت
+                    </option>
+
+                    <option value="deadline">
+                        نزدیک‌ترین Deadline
+                    </option>
+
+                </select>
+
+
+                <!-- Reset -->
+                <button
+                    id="resetFilters"
+                    type="button"
+                >
+                    ↻
+                </button>
+
+            </div>
+
+
+
+            <!-- ==================== TASK LIST ==================== -->
+            <div class="task-list-wrapper">
+
+                <ul id="taskList"></ul>
+
+            </div>
+
+
+
+            <!-- ==================== SHOW MORE ==================== -->
+            <div class="show-more-container">
+
+                <button
+                    id="showMoreBtn"
+                    type="button"
+                    style="display: none;"
+                >
+                    نمایش بیشتر ↓
+                </button>
+
+            </div>
+
+
+
+            <!-- ==================== REMINDER ==================== -->
+            <div
+                id="reminderBox"
+                class="reminder-box"
+            ></div>
+
+        </div>
+
+
+
+        <!-- ==================== HELP MODAL ==================== -->
+        <div
+            id="helpModal"
+            class="help-modal"
+        >
+
+            <div class="help-content">
+
+
+                <button
+                    id="closeHelp"
+                    class="close-help"
+                    type="button"
+                >
+                    ×
+                </button>
+
+
+                <h2>
+                    راهنمای استفاده
+                </h2>
+
+
+                <div class="help-item">
+
+                    <span>👆</span>
+
+                    <p>
+                        برای نمایش گزینه‌های ویرایش و حذف،
+                        روی تسک چند لحظه نگه دارید.
+                    </p>
+
+                </div>
+
+
+                <div class="help-item">
+
+                    <span>✓</span>
+
+                    <p>
+                        برای انجام‌شدن یا لغو انجام تسک،
+                        روی دکمه تیک بزنید.
+                    </p>
+
+                </div>
+
+
+                <div class="help-item">
+
+                    <span>✎</span>
+
+                    <p>
+                        برای ویرایش متن تسک
+                        از آیکون مداد استفاده کنید.
+                    </p>
+
+                </div>
+
+
+                <div class="help-item">
+
+                    <span>×</span>
+
+                    <p>
+                        برای حذف تسک
+                        از آیکون ضربدر استفاده کنید.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ==================== TOAST ==================== -->
+    <div
+        id="toast"
+        class="toast"
+    ></div>
+
+
+
+    <!-- ==================== JAVASCRIPT ==================== -->
     <script src="script.js"></script>
+
 </body>
+
 </html>
