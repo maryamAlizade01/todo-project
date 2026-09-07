@@ -575,6 +575,13 @@ if (task.deadline) {
     const swipeDelete = document.createElement("button"); 
     swipeDelete.innerHTML = "🗑"; 
     swipeDelete.classList.add("swipe-delete");
+    swipeDelete.addEventListener("touchstart", function (event) {
+    event.stopPropagation();
+     }, { passive: true });
+
+     swipeDelete.addEventListener("touchend", function (event) {
+    event.stopPropagation();
+    }, { passive: true });
 
     swipeDelete.addEventListener("click", function (event) {
     event.stopPropagation();
@@ -688,9 +695,7 @@ pinBtn.addEventListener("click", function (event) {
     // بازسازی لیست
     taskList.innerHTML = "";
 
-    tasks.forEach(function (task) {
-        createTask(task);
-    });
+    renderVisibleTasks();
 
     searchTasks();
 });
@@ -801,14 +806,14 @@ moreBtn.addEventListener("click", function (event) {
     taskRow.appendChild(completeBtn);
     taskRow.appendChild(li);
     taskRow.appendChild(taskActions);
-    let startX = 0;
-    let currentX = 0;
+let startX = 0;
+let currentX = 0;
 
 taskRow.addEventListener("touchstart", function (event) {
-
     startX = event.touches[0].clientX;
     currentX = startX;
 
+    taskRow.style.transition = "none";
 }, { passive: true });
 
 
@@ -818,38 +823,44 @@ taskRow.addEventListener("touchmove", function (event) {
 
     const distance = currentX - startX;
 
-    // فقط کشیدن به سمت راست
+    // فقط به سمت راست
     if (distance > 0) {
 
-        const move = Math.min(distance, 60);
+        // حداکثر حرکت فقط 45px
+        const move = Math.min(distance, 25);
 
         taskRow.style.transform = `translateX(${move}px)`;
 
-        swipeDelete.style.display = "flex";
+        // بعد از 25px آیکون ظاهر شود
+        if (distance >= 15) {
+            swipeDelete.style.display = "flex";
+        } else {
+            swipeDelete.style.display = "none";
+        }
     }
 
 });
 
 
-taskRow.addEventListener("touchend", function () {
+taskRow.addEventListener("touchend", function (event) {
+
+    // اگر لمس روی دکمه حذف بوده، کاری به swipe نداشته باش
+    if (event.target.closest(".swipe-delete")) {
+        return;
+    }
 
     const distance = currentX - startX;
 
-    if (distance > 30) {
+    taskRow.style.transition = "transform 0.2s ease";
 
-        taskRow.style.transform = "translateX(60px)";
-
+    if (distance >= 20) {
+        taskRow.style.transform = "translateX(25px)";
         swipeDelete.style.display = "flex";
-
     } else {
-
         taskRow.style.transform = "translateX(0)";
-
         swipeDelete.style.display = "none";
     }
-
 });
-
     // اضافه کردن به لیست
     taskList.appendChild(taskRow);
 
@@ -965,12 +976,9 @@ function updateShowMoreButton() {
 document.getElementById("showMoreBtn").addEventListener("click", function () {
 
     if (visibleTaskCount >= tasks.length) {
-
         visibleTaskCount = 5;
-
     } else {
-
-        visibleTaskCount += tasksPerPage;
+        visibleTaskCount = tasks.length;
     }
 
     renderVisibleTasks();
@@ -1043,8 +1051,7 @@ if (deadlineDate.value || deadlineTime.value) {
 
     localStorage.setItem("tasks", JSON.stringify(tasks));
 
-    createTask(newTask);
-
+    renderVisibleTasks();
     updateTaskCount();
     updateShowMoreButton();
     updateProgress();
@@ -1068,9 +1075,7 @@ taskInput.addEventListener("keydown", function (event) {
 });
 
 
-tasks.forEach(function (task) {
-    createTask(task);
-});
+renderVisibleTasks();
 
 updateTaskCount();
 
@@ -1320,16 +1325,7 @@ function applySort() {
 
         return 0;
     });
-
     localStorage.setItem("tasks", JSON.stringify(tasks));
-
-    taskList.innerHTML = "";
-
-const visibleTasks = tasks.slice(0, visibleTaskCount);
-
-visibleTasks.forEach(function (task) {
-    createTask(task);
-});
 
 applyFilter();
 updateShowMoreButton();
@@ -1353,39 +1349,27 @@ let indicatorLength = 7;
 
 window.addEventListener("scroll", function () {
 
-    const currentScrollY = window.scrollY;
-    const scrollDifference = currentScrollY - lastScrollY;
-
     const indicator = document.querySelector(".task-list-wrapper");
 
     if (!indicator) {
         return;
     }
 
-    // اسکرول به پایین
-    if (scrollDifference > 0) {
+    const currentScrollY = window.scrollY;
 
-        indicatorLength += scrollDifference;
+    // کل مقدار قابل اسکرول صفحه
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
 
-    }
+    // درصدی که صفحه اسکرول شده
+    const scrollProgress = maxScroll > 0
+        ? currentScrollY / maxScroll
+        : 0;
 
-    // اسکرول به بالا
-    else if (scrollDifference < 0) {
-
-        indicatorLength += scrollDifference;
-    }
-
-    // حداقل اندازه = نقطه
-    if (indicatorLength < 7) {
-        indicatorLength = 7;
-    }
-
-    // حداکثر اندازه
+    // ارتفاع کامل خط
     const maxLength = indicator.offsetHeight;
 
-    if (indicatorLength > maxLength) {
-        indicatorLength = maxLength;
-    }
+    // طول نشانگر بر اساس درصد اسکرول
+    indicatorLength = 7 + (maxLength - 7) * scrollProgress;
 
     indicator.style.setProperty(
         "--indicator-length",

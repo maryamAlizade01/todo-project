@@ -71,8 +71,17 @@ h1 {
     gap: 8px;
     width: 100%;
 }
+.mobile-options {
+    display: none;
+}
+.mobile-selects {
+    display: contents;
+}
+#resetFilters {
+    order: -1;
+}
 
-.category-select-wrapper {
+.category-wrapper {
     display: contents;
 }
 .text {
@@ -271,8 +280,8 @@ ul {
 }
 
 .task-actions {
-    right: 15px;
-    top: -9px;
+    right: 4px;
+    top: -5px;
     flex-direction: row;
     gap: 5px;
     opacity: 1;
@@ -281,7 +290,6 @@ ul {
     display: flex;
     align-items: center;
     position: relative;
-    display: flex;
     visibility: visible;
 }
 
@@ -1104,24 +1112,33 @@ body.dark .completeBtn {
 }
 .show-more-container {
     display: flex;
-    justify-content: flex-start;
-    margin-top: 4px;
-    padding-left: 24px;
+    justify-content: center;
+    margin-top: 12px;
+    width: 100%;
 }
 
 #showMoreBtn {
     border: none;
-    background: none;
-    padding: 4px 0;
-
-    font-size: 13px;
-    color: #777;
-
+    background: #f1d8f5;
+    color: #891ba8;
+    padding: 7px 16px;
+    border-radius: 20px;
+    font-family: 'Estedad', 'Outfit', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
     cursor: pointer;
+    transition: 0.2s ease;
+    box-shadow: none;
 }
 
 #showMoreBtn:hover {
-    opacity: 0.7;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(137, 27, 168, 0.15);
+}
+
+#showMoreBtn:active {
+    transform: scale(0.96);
+    box-shadow: none;
 }
 .task-list-wrapper {
     position: relative;
@@ -1386,8 +1403,24 @@ body.dark .completeBtn {
         grid-row: 2;
         width: 100%;
         box-sizing: border-box;
+        order: 3;
     }
-
+    .mobile-selects {
+        order: 2;
+        display: flex;
+        flex-direction: row;
+        gap: 8px;
+        width: 100%;
+    }
+    #deadlineDate,
+    #deadlineTime {
+        flex: 1;
+        width: 50%;
+        min-width: 0;
+        height: 40px;
+        font-size: 11px;
+        padding: 8px 10px;
+    }
     /* ---------- Add Task ---------- */
 
     .input-box {
@@ -1462,21 +1495,38 @@ body.dark .completeBtn {
     /* ---------- Select Filters ---------- */
 
     .filter-container {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 7px;
-    }
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 10px;
+    width: 100%;
+}
 
-    #statusFilter,
-    #categoryFilter,
-    #priorityFilter,
-    #sortInput {
-        width: 100%;
-        min-width: 0;
-        height: 38px;
-        font-size: 10px;
-    }
+#statusFilter,
+#categoryFilter,
+#priorityFilter,
+#sortInput {
+    width: 100%;
+    height: 40px;
+    padding: 0 10px;
+    border: 2px solid #eee;
+    border-radius: 10px;
+    font-family: 'Estedad', 'Outfit', sans-serif;
+    font-size: 11px;
+    background: #fafafa;
+    color: #542b55;
+    outline: none;
+}
 
+#resetFilters {
+    order: 3;
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: 170px;
+    height: 35px;
+    border-radius: 10px;
+    padding: 0;
+}
 
     /* ---------- Stats ---------- */
 
